@@ -5,6 +5,7 @@ public class BulletScript : MonoBehaviour
 {
 	private float speed = 10;
 	private Color color = Color.white;
+	private int bounceCount = 0;
 
 	private float hitLength = .4f;
 
@@ -26,6 +27,10 @@ public class BulletScript : MonoBehaviour
 			else if(hit.transform.CompareTag("Player"))
 			{
 				Destroy(this.gameObject);
+			}
+			else
+			{
+				bounceCount++;
 			}
 
 			this.rigidbody.velocity = Vector3.Reflect(this.rigidbody.velocity, hit.normal).normalized * speed;
