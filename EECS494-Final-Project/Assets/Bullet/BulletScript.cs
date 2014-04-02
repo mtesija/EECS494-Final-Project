@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BulletScript : MonoBehaviour
+public class BulletScript : Photon.MonoBehaviour
 {
 	private float speed = 10;
 	private Color color = Color.white;
@@ -11,12 +11,6 @@ public class BulletScript : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		Vector3 position = this.transform.position;
-		if(position.x > 500 || position.x < -500 || position.y > 500  || position.y < -500 || position.z > 500 || position.z < -500)
-		{
-			Destroy(this.gameObject);
-		}
-
 		RaycastHit hit;
 		if(Physics.Raycast(this.transform.position, this.rigidbody.velocity, out hit, hitLength))
 		{
@@ -26,6 +20,7 @@ public class BulletScript : MonoBehaviour
 			}
 			else if(hit.transform.CompareTag("Player"))
 			{
+				PhotonNetwork.Destroy(this.gameObject);
 				Destroy(this.gameObject);
 			}
 			else
