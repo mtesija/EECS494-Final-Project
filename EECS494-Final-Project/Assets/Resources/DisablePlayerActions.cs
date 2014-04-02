@@ -3,7 +3,7 @@ using System.Collections;
 
 public class DisablePlayerActions : Photon.MonoBehaviour
 {
-	void Awake()
+	void Update()
 	{
 		if(!photonView.isMine)
 		{
