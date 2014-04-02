@@ -7,13 +7,19 @@ public class DisablePlayerActions : Photon.MonoBehaviour
 	{
 		if(!photonView.isMine)
 		{
+			this.gameObject.layer = 10;
+
 			this.GetComponent<MouseLook>().enabled = false;
 			this.GetComponent<FPSInputController>().enabled = false;
 			this.GetComponent<CharacterMotor>().enabled = false;
 			this.GetComponent<CharacterController>().enabled = false;
+			
+			this.GetComponentInChildren<Camera>().enabled = false;
+			this.GetComponentInChildren<GUILayer>().enabled = false;
+			this.GetComponentInChildren<AudioListener>().enabled = false;
 
-			//this.GetComponentInChildren<MouseLook>().enabled = false;
-			//this.GetComponentInChildren<PlayerShootScript>().enabled = false;
+			this.GetComponentInChildren<MouseLook>().enabled = false;
+			this.GetComponentInChildren<PlayerShootScript>().enabled = false;
 		}
 	}
 }
