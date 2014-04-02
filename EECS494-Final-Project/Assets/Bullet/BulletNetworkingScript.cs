@@ -9,13 +9,10 @@ public class BulletNetworkingScript : Photon.MonoBehaviour
 
 	BulletScript bulletScript;
 
-	void Start()
-	{
-		bulletScript = this.GetComponent<BulletScript>();
-	}
-
 	void Awake()
 	{
+		bulletScript = this.GetComponent<BulletScript>();
+
 		if(photonView.isMine)
 		{
 			this.enabled = false;
@@ -32,26 +29,33 @@ public class BulletNetworkingScript : Photon.MonoBehaviour
 		{
 			Vector3 velocity = this.rigidbody.velocity;
 			Color color = bulletScript.color;
+			float r = color.r;
+			float g = color.g;
+			float b = color.b;
+			float a = color.a;
 
 			stream.Serialize(ref velocity);
-			stream.Serialize(ref color.r);
-			stream.Serialize(ref color.g);
-			stream.Serialize(ref color.b);
-			stream.Serialize(ref color.a);
+			stream.Serialize(ref r);
+			stream.Serialize(ref g);
+			stream.Serialize(ref b);
+			stream.Serialize(ref a);
 		}
 		else
 		{
 			Vector3 velocity = this.rigidbody.velocity;
-			Color color = Color.white;
+			float r = 0;
+			float g = 0;
+			float b = 0;
+			float a = 0;
 
 			stream.Serialize(ref velocity);
-			stream.Serialize(ref color.r);
-			stream.Serialize(ref color.g);
-			stream.Serialize(ref color.b);
-			stream.Serialize(ref color.a);
+			stream.Serialize(ref r);
+			stream.Serialize(ref g);
+			stream.Serialize(ref b);
+			stream.Serialize(ref a);
 
 			serverVelocity = velocity;
-			serverColor = color;
+			serverColor = new Color(r, g, b, a);
 		}
 	}
 

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerShootScript : Photon.MonoBehaviour
 {
-	float shootDelayTimer = 1;
+	float shootDelayTimer = .5f;
 
 	public GameObject player;
 
@@ -23,7 +23,7 @@ public class PlayerShootScript : Photon.MonoBehaviour
 		{
 			if(Input.GetMouseButtonDown(0))
 			{
-				shootDelayTimer = 1;
+				shootDelayTimer = .5f;
 
 				GameObject bullet = PhotonNetwork.Instantiate("Bullet", this.transform.position, Quaternion.identity, 0) as GameObject;
 				BulletScript bulletScript = bullet.GetComponent<BulletScript>();
