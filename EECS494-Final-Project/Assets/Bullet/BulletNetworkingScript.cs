@@ -4,8 +4,12 @@ using System.Collections;
 [RequireComponent(typeof(PhotonView))]
 public class BulletNetworkingScript : Photon.MonoBehaviour
 {
+	private Vector3 serverPosition;
+	private Vector3 clientPosition;
+
 	private Vector3 serverVelocity;
-	private Color serverColor;
+
+	private float lerpValue = 0;
 
 	BulletScript bulletScript;
 
@@ -21,6 +25,9 @@ public class BulletNetworkingScript : Photon.MonoBehaviour
 		{
 			bulletScript.enabled = false;
 		}
+
+		serverPosition = this.transform.position;
+		clientPosition = this.transform.position;
 	}
 	
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -28,40 +35,33 @@ public class BulletNetworkingScript : Photon.MonoBehaviour
 		if(stream.isWriting)
 		{
 			Vector3 velocity = this.rigidbody.velocity;
-			Color color = bulletScript.color;
-			float r = color.r;
-			float g = color.g;
-			float b = color.b;
-			float a = color.a;
+			Vector3 position = this.transform.position;
 
 			stream.Serialize(ref velocity);
-			stream.Serialize(ref r);
-			stream.Serialize(ref g);
-			stream.Serialize(ref b);
-			stream.Serialize(ref a);
+			stream.Serialize(ref position);
 		}
 		else
 		{
 			Vector3 velocity = this.rigidbody.velocity;
-			float r = 0;
-			float g = 0;
-			float b = 0;
-			float a = 0;
+			Vector3 position = Vector3.zero;
 
 			stream.Serialize(ref velocity);
-			stream.Serialize(ref r);
-			stream.Serialize(ref g);
-			stream.Serialize(ref b);
-			stream.Serialize(ref a);
+			stream.Serialize(ref position);
 
 			serverVelocity = velocity;
-			serverColor = new Color(r, g, b, a);
+			serverPosition = position;
+
+			clientPosition = this.transform.position;
+
+			lerpValue = 0;
 		}
 	}
 
 	public void FixedUpdate()
 	{
+		lerpValue += Time.deltaTime * 9;
+
 		this.rigidbody.velocity = serverVelocity;
-		bulletScript.SetColor(serverColor);
+		this.transform.position = Vector3.Lerp (clientPosition, serverPosition, lerpValue);
 	}
 }
