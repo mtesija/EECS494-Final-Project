@@ -17,8 +17,11 @@ public class BulletNetworkingScript : Photon.MonoBehaviour
 		{
 			this.enabled = false;
 		}
+		else
+		{
+			this.GetComponent<BulletScript>().enabled = false;
+		}
 
-		this.GetComponent<BulletScript>().enabled = false;
 		serverPosition = this.transform.position;
 		clientPosition = this.transform.position;
 	}
