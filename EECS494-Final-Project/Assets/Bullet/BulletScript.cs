@@ -3,8 +3,8 @@ using System.Collections;
 
 public class BulletScript : Photon.MonoBehaviour
 {
-	private float speed = 10;
-	private Color color = Color.white;
+	public float speed = 10;
+	public Color color = Color.white;
 	private int bounceCount = 0;
 
 	private float hitLength = .4f;
