@@ -9,6 +9,11 @@ public class BulletScript : Photon.MonoBehaviour
 
 	private float hitLength = .4f;
 
+	void Start()
+	{
+		this.rigidbody.velocity = this.transform.up * speed;
+	}
+
 	void FixedUpdate()
 	{
 		RaycastHit hit;

@@ -25,9 +25,8 @@ public class PlayerShootScript : Photon.MonoBehaviour
 			{
 				shootDelayTimer = .5f;
 
-				GameObject bullet = PhotonNetwork.Instantiate("Bullet", this.transform.position, Quaternion.identity, 0) as GameObject;
+				GameObject bullet = PhotonNetwork.Instantiate("Bullet", this.transform.position, this.transform.rotation, 0) as GameObject;
 				BulletScript bulletScript = bullet.GetComponent<BulletScript>();
-				bullet.rigidbody.velocity = this.transform.position - player.transform.position;
 				bulletScript.SetColor(Color.green);
 				bulletScript.SetSpeed(10);
 			}
