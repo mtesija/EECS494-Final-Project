@@ -7,10 +7,6 @@ public class PlayerShootScript : Photon.MonoBehaviour
 
 	public GameObject player;
 
-	void Start()
-	{
-	}
-
 	void Update()
 	{
 		Screen.lockCursor = true;
@@ -24,8 +20,6 @@ public class PlayerShootScript : Photon.MonoBehaviour
 			if(Input.GetMouseButtonDown(0))
 			{
 				shootDelayTimer = .5f;
-
-
 
 				GameObject bullet = PhotonNetwork.Instantiate("Bullet", this.transform.position, this.transform.rotation, 0) as GameObject;
 				BulletScript bulletScript = bullet.GetComponent<BulletScript>();
