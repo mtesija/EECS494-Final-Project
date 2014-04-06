@@ -5,11 +5,13 @@ public class BulletScript : Photon.MonoBehaviour
 {
 	public float speed = 10;
 	public Color color = Color.white;
+
 	private int bounceCount = 0;
+	private const int MAX_BOUNCES = 10;
 
 	private float hitLength = .4f;
 
-	void Start()
+	void Awake()
 	{
 		this.rigidbody.velocity = this.transform.up * speed;
 	}
@@ -19,14 +21,27 @@ public class BulletScript : Photon.MonoBehaviour
 		RaycastHit hit;
 		if(Physics.Raycast(this.transform.position, this.rigidbody.velocity, out hit, hitLength))
 		{
-			if(hit.transform.CompareTag("Bullet"))
+			if(hit.transform.CompareTag("Player"))
 			{
-				return;
+				if(photonView.isMine)
+				{
+					PhotonNetwork.Destroy(this.gameObject);
+				}
+				else
+				{
+					this.gameObject.SetActive(false);
+				}
 			}
-			else if(hit.transform.CompareTag("Player"))
+			else if(bounceCount >= MAX_BOUNCES)
 			{
-				PhotonNetwork.Destroy(this.gameObject);
-				Destroy(this.gameObject);
+				if(photonView.isMine)
+				{
+					PhotonNetwork.Destroy(this.gameObject);
+				}
+				else
+				{
+					this.gameObject.SetActive(false);
+				}
 			}
 			else
 			{
