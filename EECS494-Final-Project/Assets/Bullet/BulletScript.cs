@@ -3,8 +3,8 @@ using System.Collections;
 
 public class BulletScript : Photon.MonoBehaviour
 {
-	public float speed = 10;
-	public Color color = Color.white;
+	private float speed = 10;
+	private Color color = Color.white;
 
 	private int bounceCount = 0;
 	private const int MAX_BOUNCES = 10;
@@ -52,16 +52,40 @@ public class BulletScript : Photon.MonoBehaviour
 		}
 	}
 
-	public void SetColor(Color inColor)
+	[RPC]
+	private void UpdateColor(Color inColor)
 	{
-		color = inColor;
+		this.color = inColor;
 		Material trailMaterial = this.GetComponent<TrailRenderer>().material;
 		trailMaterial.SetColor("_TintColor", color);
 	}
 
+	public void SetColor(Color inColor)
+	{
+		//photonView.RPC("UpdateColor", PhotonTargets.All, inColor);
+	}
+
+	[RPC]
+	private void UpdateSpeed(float inSpeed)
+	{
+		this.speed = inSpeed;
+		this.rigidbody.velocity = this.rigidbody.velocity.normalized * speed;
+	}
+
 	public void SetSpeed(float inSpeed)
 	{
-		speed = inSpeed;
-		this.rigidbody.velocity = this.rigidbody.velocity.normalized * speed;
+		photonView.RPC("UpdateSpeed", PhotonTargets.All, inSpeed);
+	}
+
+	[RPC]
+	private void UpdateSize(float inSize)
+	{
+		TrailRenderer trailRenderer = this.GetComponent<TrailRenderer>();
+		trailRenderer.startWidth = inSize;
+	}
+
+	public void SetSize(float inSize)
+	{
+		photonView.RPC ("UpdateSize", PhotonTargets.All, inSize);
 	}
 }
