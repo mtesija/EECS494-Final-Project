@@ -26,42 +26,33 @@ public class BulletNetworkingScript : Photon.MonoBehaviour
 			bulletScript.enabled = false;
 		}
 
-		serverPosition = this.transform.position;
-		clientPosition = this.transform.position;
+		this.serverPosition = this.transform.position;
+		this.clientPosition = this.transform.position;
 	}
 	
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
 		if(stream.isWriting)
-		{
-			Vector3 velocity = this.rigidbody.velocity;
-			Vector3 position = this.transform.position;
-
-			stream.Serialize(ref velocity);
-			stream.Serialize(ref position);
+		{			
+			stream.SendNext(this.rigidbody.velocity);
+			stream.SendNext(this.transform.position);
 		}
 		else
 		{
-			Vector3 velocity = this.rigidbody.velocity;
-			Vector3 position = Vector3.zero;
+			this.serverVelocity = (Vector3) stream.ReceiveNext();
+			this.serverPosition = (Vector3) stream.ReceiveNext();
 
-			stream.Serialize(ref velocity);
-			stream.Serialize(ref position);
+			this.clientPosition = this.transform.position;
 
-			serverVelocity = velocity;
-			serverPosition = position;
-
-			clientPosition = this.transform.position;
-
-			lerpValue = 0;
+			this.lerpValue = 0;
 		}
 	}
 
 	public void FixedUpdate()
 	{
-		lerpValue += Time.deltaTime * 9;
+		this.lerpValue += Time.deltaTime * 9;
 
-		this.rigidbody.velocity = serverVelocity;
-		this.transform.position = Vector3.Lerp (clientPosition, serverPosition, lerpValue);
+		this.rigidbody.velocity = this.serverVelocity;
+		this.transform.position = Vector3.Lerp(this.clientPosition, this.serverPosition, this.lerpValue);
 	}
 }
