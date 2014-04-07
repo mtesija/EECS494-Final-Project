@@ -91,11 +91,11 @@ public class BulletScript : Photon.MonoBehaviour
 	}
 
 	[RPC]
-	void SetColor(float r, float g, float b, float a)
+	private void SetColor(float r, float g, float b, float a)
 	{
 		this.color = new Color(r, g, b, a);
-		Material trailMaterial = this.GetComponent<TrailRenderer>().material;
-		trailMaterial.SetColor("_TintColor", color);
+		this.renderer.material.color = this.color;
+		this.GetComponent<TrailRenderer>().material.SetColor("_TintColor", this.color);
 	}
 
 	[RPC]
@@ -108,7 +108,8 @@ public class BulletScript : Photon.MonoBehaviour
 	[RPC]
 	private void SetSize(float inSize)
 	{
-		TrailRenderer trailRenderer = this.GetComponent<TrailRenderer>();
-		trailRenderer.startWidth = inSize;
+		this.GetComponent<TrailRenderer>().startWidth = inSize;
+		Vector3 scale = new Vector3(inSize, inSize, inSize);
+		this.transform.localScale = scale;
 	}
 }

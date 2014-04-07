@@ -23,7 +23,7 @@ public class PlayerShootScript : Photon.MonoBehaviour
 
 				GameObject bullet = PhotonNetwork.Instantiate("Bullet", this.transform.position, this.transform.rotation, 0) as GameObject;
 				PhotonView bulletView = bullet.GetComponent<PhotonView>();
-				Color color = new Color(0, 0, 1, 1);
+				Color color = new Color(0, 1, 0, 1);
 				bulletView.RPC("SetColor", PhotonTargets.All, color.r, color.g, color.b, color.a);
 			}
 		}
