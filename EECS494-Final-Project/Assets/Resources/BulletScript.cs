@@ -52,6 +52,8 @@ public class BulletScript : Photon.MonoBehaviour
 				}
 				else
 				{
+					//Store bounce position for heat map
+
 					bounceCount++;
 				}
 
@@ -69,11 +71,6 @@ public class BulletScript : Photon.MonoBehaviour
 
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
 	{
-		if(this.isOwner)
-		{
-			return;
-		}
-
 		if(stream.isWriting)
 		{			
 			stream.SendNext(this.rigidbody.velocity);
@@ -94,8 +91,8 @@ public class BulletScript : Photon.MonoBehaviour
 	private void SetColor(float r, float g, float b, float a)
 	{
 		this.color = new Color(r, g, b, a);
-		this.renderer.material.color = this.color;
 		this.GetComponent<TrailRenderer>().material.SetColor("_TintColor", this.color);
+		this.GetComponent<MeshRenderer>().material.SetColor("_TintColor", this.color);
 	}
 
 	[RPC]
@@ -108,7 +105,7 @@ public class BulletScript : Photon.MonoBehaviour
 	[RPC]
 	private void SetSize(float inSize)
 	{
-		this.GetComponent<TrailRenderer>().startWidth = inSize;
+		this.GetComponent<TrailRenderer>().startWidth = inSize * 1.5f;
 		Vector3 scale = new Vector3(inSize, inSize, inSize);
 		this.transform.localScale = scale;
 	}
