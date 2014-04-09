@@ -4,8 +4,10 @@ using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour 
 {
+
 	public PauseScript pauseScript;
-	
+	float bulletSpeed = 10;
+	public GameObject bullet;
 	public CharacterController CharCont;
 	public CharacterMotor CharMotor;
 	
@@ -126,6 +128,17 @@ public class PlayerScript : MonoBehaviour
 				{
 					if(bulletCounter > 0)
 					{	
+						GameObject bullet = PhotonNetwork.Instantiate("Bullet", this.transform.position, this.transform.rotation, 0) as GameObject;
+						PhotonView bulletView = bullet.GetComponent<PhotonView>();
+						Color color = new Color(0, 1, 0, 1);
+						bulletView.RPC("SetColor", PhotonTargets.All, color.r, color.g, color.b, color.a);
+
+						/*
+						GameObject redBullet = Instantiate(Resources.Load("Bullet"), this.transform.position, Quaternion.identity) as GameObject;
+						redBullet.rigidbody.velocity = ray.direction;
+						BulletScript redBulletScript = redBullet.GetComponent<BulletScript>();
+						*/
+
 						//Spawn Muzzles at the end of the gun barrel.
 						GameObject _Muzzle;
 						_Muzzle = Instantiate(muzzleArray[Random.Range(0,10)], CurrentWeapon.gunBarrelPoint.transform.position, CurrentWeapon.gunBarrelPoint.transform.rotation) as GameObject; //Make a MuzzleFlash. //Rotate it toward the gun.
@@ -140,7 +153,8 @@ public class PlayerScript : MonoBehaviour
 							_Impact.transform.Translate(0.0f, 0.01f, 0.0f);
 							//Position the object 0.01f upwards, so that the plane prefab wont get "stuck" into other surfaces.
 						}
-						
+
+						/*
 						CollidableScript collidable = hit.collider.gameObject.GetComponent<CollidableScript>();
 						if (collidable)
 						{
@@ -161,7 +175,8 @@ public class PlayerScript : MonoBehaviour
 								//Destroy the component on that object, so that it wont be triggered twice when shot at.
 							}
 						}	
-						
+						*/
+
 						//Recoil while shooting.
 						if(!isAiming)
 						{
