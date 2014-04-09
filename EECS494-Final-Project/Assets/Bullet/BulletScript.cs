@@ -23,7 +23,7 @@ public class BulletScript : Photon.MonoBehaviour
 		if(photonView.isMine)
 		{
 			this.isOwner = true;
-			this.rigidbody.velocity = this.transform.up * speed;
+			//this.rigidbody.velocity = this.transform.up * speed;
 		}
 		else
 		{
