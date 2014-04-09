@@ -7,9 +7,6 @@ public class BulletScript : Photon.MonoBehaviour
 	private float speed = 10;
 	private Color color = Color.white;
 
-	private int bounceCount = 0;
-	private const int MAX_BOUNCES = 10;
-
 	private float hitLength = .4f;
 
 	private bool isOwner = false;
@@ -46,16 +43,11 @@ public class BulletScript : Photon.MonoBehaviour
 				{
 					//PhotonNetwork.Destroy(this.gameObject);
 				}
-				else if(bounceCount >= MAX_BOUNCES)
-				{
-					//PhotonNetwork.Destroy(this.gameObject);
-				}
-				else
-				{
-					//Store bounce position for heat map
 
-					bounceCount++;
-				}
+				GameObject hitEffect = PhotonNetwork.Instantiate("BulletHitEffect", this.transform.position - hit.normal * .1f, Quaternion.LookRotation(hit.normal), 0);
+				PhotonView hitView = hitEffect.GetComponent<PhotonView>();
+				hitView.RPC("SetColor", PhotonTargets.All, this.color.r, this.color.g, this.color.b, this.color.a);
+				hitView.RPC("SetSize", PhotonTargets.All, this.transform.localScale.x);
 
 				this.rigidbody.velocity = Vector3.Reflect(this.rigidbody.velocity, hit.normal).normalized * speed;
 			}
