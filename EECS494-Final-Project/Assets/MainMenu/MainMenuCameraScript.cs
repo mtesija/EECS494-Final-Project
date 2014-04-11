@@ -4,11 +4,18 @@ using Random = UnityEngine.Random;
 
 public class MainMenuCameraScript : MonoBehaviour
 {
-	private string roomName = "";
+	private string roomName = "Game Name";
+
+	private Color playerColor = Color.red;
+	float r = 1;
+	float b = 0;
+	float g = 0;
 	
 	private Vector2 scrollPos = Vector2.zero;
 	
 	private bool connectFailed = false;
+
+	private string serverVersion = "EPSILON";
 	
 	public static readonly string SceneNameMenu = "_MainMenu";
 	
@@ -23,7 +30,7 @@ public class MainMenuCameraScript : MonoBehaviour
 		if (PhotonNetwork.connectionStateDetailed == PeerState.PeerCreated)
 		{
 			// Connect to the photon master-server. We use the settings saved in PhotonServerSettings (a .asset file in this project)
-			PhotonNetwork.ConnectUsingSettings("BETA");
+			PhotonNetwork.ConnectUsingSettings(serverVersion);
 		}
 		
 		// generate a name for this player, if none is assigned yet
@@ -31,6 +38,10 @@ public class MainMenuCameraScript : MonoBehaviour
 		{
 			PhotonNetwork.playerName = "Guest" + Random.Range(1, 9999);
 		}
+		
+		r = Random.Range(0f, 1f);
+		b = Random.Range(0f, 1f);
+		g = Random.Range(0f, 1f);
 	}
 	
 	public void OnGUI()
@@ -55,7 +66,7 @@ public class MainMenuCameraScript : MonoBehaviour
 				if (GUILayout.Button("Try Again", GUILayout.Width(100)))
 				{
 					this.connectFailed = false;
-					PhotonNetwork.ConnectUsingSettings("1.0");
+					PhotonNetwork.ConnectUsingSettings(serverVersion);
 				}
 			}
 			
@@ -64,74 +75,93 @@ public class MainMenuCameraScript : MonoBehaviour
 		
 		
 		GUI.skin.box.fontStyle = FontStyle.Bold;
-		GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 300), "Join or Create a Room");
-		GUILayout.BeginArea(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 300));
+		GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 350), "Join or Create a Room");
+		GUILayout.BeginArea(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 350));
 		
 		GUILayout.Space(25);
 		
 		// Player name
 		GUILayout.BeginHorizontal();
-		GUILayout.Label("Player name:", GUILayout.Width(100));
+		GUILayout.Space(15);
+		GUILayout.Label("Player Name:", GUILayout.Width(80));
 		PhotonNetwork.playerName = GUILayout.TextField(PhotonNetwork.playerName);
-		GUILayout.Space(105);
 		if (GUI.changed)
 		{
 			// Save name
 			PlayerPrefs.SetString("playerName", PhotonNetwork.playerName);
 		}
+		GUILayout.Space(15);
 		GUILayout.EndHorizontal();
 		
+		GUILayout.BeginHorizontal();
 		GUILayout.Space(15);
+		GUILayout.BeginVertical();
+		GUILayout.Label("Player Color:", GUILayout.Width(100));
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("R:", GUILayout.Width(15));
+		r = GUILayout.HorizontalSlider(r, 0, 1, GUILayout.Width(180));
+		GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("B:", GUILayout.Width(15));
+		g = GUILayout.HorizontalSlider(g, 0, 1, GUILayout.Width(180));
+		GUILayout.EndHorizontal();
+		GUILayout.BeginHorizontal();
+		GUILayout.Label("G:", GUILayout.Width(15));
+		b = GUILayout.HorizontalSlider(b, 0, 1, GUILayout.Width(180));
+		GUILayout.EndHorizontal();
+		GUILayout.EndVertical();
+		GUILayout.Space(10);
+		playerColor = new Color(r, g, b);
+		GUI.color = playerColor;
+		Texture2D menuColorPreview = new Texture2D(150, 90);
+		GUILayout.Label(menuColorPreview);
+		GUI.color = Color.white;
+		GUILayout.Space(15);
+		GUILayout.EndHorizontal();
 		
+		GUILayout.Space(10);
+
 		// Join room by title
 		GUILayout.BeginHorizontal();
-
-		GUILayout.Label("Roomname:", GUILayout.Width(100));
-
+		GUILayout.Space(15);
+		GUILayout.Label("Room Name:", GUILayout.Width(80));
 		this.roomName = GUILayout.TextField(this.roomName);
-		
+		GUILayout.Space(15);
+		GUILayout.EndHorizontal();
 		if (GUILayout.Button("Create Room", GUILayout.Width(100)))
 		{
-			PhotonNetwork.CreateRoom(this.roomName, new RoomOptions() { maxPlayers = 10 }, null);
+			PhotonNetwork.CreateRoom(this.roomName, new RoomOptions() { maxPlayers = 6 }, null);
 		}
 		
-		GUILayout.EndHorizontal();
-		
-		// Create a room (fails if exist!)
+		GUILayout.Space(10);
+
 		GUILayout.BeginHorizontal();
-
-		GUILayout.FlexibleSpace();
-
-		if (GUILayout.Button("Join Room", GUILayout.Width(100)))
-		{
-			PhotonNetwork.JoinRoom(this.roomName);
-		}
-		
-		GUILayout.EndHorizontal();
-		
 		GUILayout.Space(15);
-		
-		// Join random room
-		GUILayout.BeginHorizontal();
-		
-		GUILayout.Label(PhotonNetwork.countOfPlayers + " users are online in " + PhotonNetwork.countOfRooms + " rooms.");
-		GUILayout.FlexibleSpace();
-		if (GUILayout.Button("Join Random", GUILayout.Width(100)))
+		if(PhotonNetwork.countOfPlayers == 1)
 		{
-			PhotonNetwork.JoinRandomRoom();
-		}
-
-		GUILayout.EndHorizontal();
-		
-		GUILayout.Space(15);
-
-		if (PhotonNetwork.GetRoomList().Length == 0)
-		{
-			GUILayout.Label("Currently no games are available.");
-			GUILayout.Label("Rooms will be listed here, when they become available.");
+			GUILayout.Label("There is " + PhotonNetwork.countOfPlayers + " user online playing " + PhotonNetwork.countOfRooms + " games.");
 		}
 		else
 		{
+			GUILayout.Label("There are " + PhotonNetwork.countOfPlayers + " users online playing " + PhotonNetwork.countOfRooms + " games.");
+		}
+		GUILayout.Space(15);
+		GUILayout.EndHorizontal();
+
+		GUILayout.Space(10);
+
+		if (PhotonNetwork.GetRoomList().Length == 0)
+		{
+			GUILayout.BeginHorizontal();
+			GUILayout.Space(15);
+			GUILayout.Label("No games are currently available.");
+			GUILayout.EndHorizontal();
+		}
+		else
+		{
+			GUILayout.BeginHorizontal();
+			GUILayout.Space(15);
+			GUILayout.BeginVertical();
 			GUILayout.Label(PhotonNetwork.GetRoomList() + " currently available. Join either:");
 			
 			// Room listing: simply call GetRoomList: no need to fetch/poll whatever!
@@ -144,11 +174,14 @@ public class MainMenuCameraScript : MonoBehaviour
 				{
 					PhotonNetwork.JoinRoom(roomInfo.name);
 				}
-				
 				GUILayout.EndHorizontal();
 			}
 			
 			GUILayout.EndScrollView();
+
+			GUILayout.EndHorizontal();
+			GUILayout.Space(15);
+			GUILayout.EndVertical();
 		}
 		
 		GUILayout.EndArea();
