@@ -4,13 +4,15 @@ using Random = UnityEngine.Random;
 
 public class MainMenuCameraScript : MonoBehaviour
 {
-	private string roomName = "Game Name";
+	private string roomName;
 
 	private Color playerColor = Color.red;
-	float r = 1;
+	float r = 0;
 	float b = 0;
 	float g = 0;
 	
+	private Texture2D menuColorPreview;
+
 	private Vector2 scrollPos = Vector2.zero;
 	
 	private bool connectFailed = false;
@@ -18,8 +20,12 @@ public class MainMenuCameraScript : MonoBehaviour
 	private string serverVersion = "EPSILON";
 	
 	public static readonly string SceneNameMenu = "_MainMenu";
-	
-	public static readonly string SceneNameGame = "Jack-map";
+
+	private int levelSelect = 0;
+	private string[] levelNames = new string[] {"Map 1", "Map 2"};
+
+	public static readonly string SceneNameGame = "Jack-Map";
+	public static readonly string SceneNameGame2 = "Andrew-Map";
 	
 	public void Awake()
 	{
@@ -38,10 +44,11 @@ public class MainMenuCameraScript : MonoBehaviour
 		{
 			PhotonNetwork.playerName = "Guest" + Random.Range(1, 9999);
 		}
-		
+		roomName = "Game" + Random.Range (1, 9999);
 		r = Random.Range(0f, 1f);
 		b = Random.Range(0f, 1f);
 		g = Random.Range(0f, 1f);
+		menuColorPreview = new Texture2D(150, 90);
 	}
 	
 	public void OnGUI()
@@ -113,7 +120,6 @@ public class MainMenuCameraScript : MonoBehaviour
 		GUILayout.Space(10);
 		playerColor = new Color(r, g, b);
 		GUI.color = playerColor;
-		Texture2D menuColorPreview = new Texture2D(150, 90);
 		GUILayout.Label(menuColorPreview);
 		GUI.color = Color.white;
 		GUILayout.Space(15);
@@ -128,10 +134,19 @@ public class MainMenuCameraScript : MonoBehaviour
 		this.roomName = GUILayout.TextField(this.roomName);
 		GUILayout.Space(15);
 		GUILayout.EndHorizontal();
+
+		
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(15);
+		GUILayout.Label("Select Map:", GUILayout.Width(80));
+		levelSelect = GUILayout.SelectionGrid(levelSelect, levelNames, 2);
+		GUILayout.Space(50);
 		if (GUILayout.Button("Create Room", GUILayout.Width(100)))
 		{
-			PhotonNetwork.CreateRoom(this.roomName, new RoomOptions() { maxPlayers = 6 }, null);
+			PhotonNetwork.CreateRoom(this.roomName, new RoomOptions() { maxPlayers = 5 }, null);
 		}
+		GUILayout.Space(15);
+		GUILayout.EndHorizontal();
 		
 		GUILayout.Space(10);
 
@@ -139,11 +154,11 @@ public class MainMenuCameraScript : MonoBehaviour
 		GUILayout.Space(15);
 		if(PhotonNetwork.countOfPlayers == 1)
 		{
-			GUILayout.Label("There is " + PhotonNetwork.countOfPlayers + " user online playing " + PhotonNetwork.countOfRooms + " games.");
+			GUILayout.Label("There is " + PhotonNetwork.countOfPlayers + " user online playing in " + PhotonNetwork.countOfRooms + " games.");
 		}
 		else
 		{
-			GUILayout.Label("There are " + PhotonNetwork.countOfPlayers + " users online playing " + PhotonNetwork.countOfRooms + " games.");
+			GUILayout.Label("There are " + PhotonNetwork.countOfPlayers + " users online playing in " + PhotonNetwork.countOfRooms + " games.");
 		}
 		GUILayout.Space(15);
 		GUILayout.EndHorizontal();
@@ -189,7 +204,14 @@ public class MainMenuCameraScript : MonoBehaviour
 	
 	public void OnCreatedRoom()
 	{
-		PhotonNetwork.LoadLevel(SceneNameGame);
+		if(levelSelect == 0)
+		{
+			PhotonNetwork.LoadLevel(SceneNameGame);
+		}
+		else if(levelSelect == 1)
+		{
+			PhotonNetwork.LoadLevel(SceneNameGame2);
+		}
 	}
 
 	public void OnFailedToConnectToPhoton(object parameters)
