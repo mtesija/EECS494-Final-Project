@@ -44,6 +44,8 @@ public class BulletScript : Photon.MonoBehaviour
 					//PhotonNetwork.Destroy(this.gameObject);
 				}
 
+				GA.API.Design.NewEvent("Bounce", this.transform.position);
+
 				GameObject hitEffect = PhotonNetwork.Instantiate("BulletHitEffect", this.transform.position - hit.normal * .1f, Quaternion.LookRotation(hit.normal), 0);
 				PhotonView hitView = hitEffect.GetComponent<PhotonView>();
 				hitView.RPC("SetColor", PhotonTargets.All, this.color.r, this.color.g, this.color.b, this.color.a);

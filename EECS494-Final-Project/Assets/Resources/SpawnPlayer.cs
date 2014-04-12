@@ -5,6 +5,6 @@ public class SpawnPlayer : Photon.MonoBehaviour
 {
 	void Awake()
 	{
-		PhotonNetwork.Instantiate("Player", this.transform.position, this.transform.rotation, 0);
+		PhotonNetwork.Instantiate("Player2", this.transform.position, this.transform.rotation, 0);
 	}
 }
