@@ -22,10 +22,11 @@ public class MainMenuCameraScript : MonoBehaviour
 	public static readonly string SceneNameMenu = "_MainMenu";
 
 	private int levelSelect;
-	private string[] levelNames = new string[] {"Map 1", "Map 2"};
+	private string[] levelNames = new string[] {"Map 1", "Map 2", "Test"};
 
 	public static readonly string SceneNameGame = "Jack-Map";
 	public static readonly string SceneNameGame2 = "Andrew-Map";
+	public static readonly string SceneNameGame3 = "TestScene";
 
 	public PlayerDataScript playerData;
 	
@@ -143,8 +144,8 @@ public class MainMenuCameraScript : MonoBehaviour
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(15);
 		GUILayout.Label("Select Map:", GUILayout.Width(80));
-		levelSelect = GUILayout.SelectionGrid(levelSelect, levelNames, 2);
-		GUILayout.Space(50);
+		levelSelect = GUILayout.SelectionGrid(levelSelect, levelNames, 3);
+		GUILayout.Space(10);
 		if (GUILayout.Button("Create Room", GUILayout.Width(100)))
 		{
 			PhotonNetwork.CreateRoom(this.roomName, new RoomOptions() { maxPlayers = 5 }, null);
@@ -215,6 +216,10 @@ public class MainMenuCameraScript : MonoBehaviour
 		else if(levelSelect == 1)
 		{
 			PhotonNetwork.LoadLevel(SceneNameGame2);
+		}
+		else if(levelSelect == 2)
+		{
+			PhotonNetwork.LoadLevel(SceneNameGame3);
 		}
 	}
 
