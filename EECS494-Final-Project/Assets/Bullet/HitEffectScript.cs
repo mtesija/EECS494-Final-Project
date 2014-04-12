@@ -5,6 +5,14 @@ public class HitEffectScript : Photon.MonoBehaviour
 {
 	private Color color = Color.white;
 
+	void Awake()
+	{
+		if(GameObject.Find("PlayerData").GetComponent<PlayerDataScript>().collectData)
+		{
+			GA.API.Design.NewEvent("Bounce " + Application.loadedLevelName, this.transform.position);
+		}
+	}
+
 	void Update()
 	{
 		if(this.photonView.isMine && this.particleSystem.isStopped)

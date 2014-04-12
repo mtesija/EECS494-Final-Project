@@ -10,6 +10,8 @@ public class MainMenuCameraScript : MonoBehaviour
 	float r = 0;
 	float b = 0;
 	float g = 0;
+
+	private bool collectData = true;
 	
 	private Texture2D menuColorPreview;
 
@@ -17,7 +19,7 @@ public class MainMenuCameraScript : MonoBehaviour
 	
 	private bool connectFailed = false;
 
-	private string serverVersion = "EPSILON";
+	private string serverVersion = "ZETA";
 	
 	public static readonly string SceneNameMenu = "_MainMenu";
 
@@ -153,6 +155,13 @@ public class MainMenuCameraScript : MonoBehaviour
 		GUILayout.Space(15);
 		GUILayout.EndHorizontal();
 		
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(15);
+		collectData = GUILayout.Toggle(collectData, "Collect Data");
+		playerData.collectData = collectData;
+		GUILayout.Space(15);
+		GUILayout.EndHorizontal();
+
 		GUILayout.Space(10);
 
 		GUILayout.BeginHorizontal();
@@ -203,7 +212,7 @@ public class MainMenuCameraScript : MonoBehaviour
 			GUILayout.Space(15);
 			GUILayout.EndVertical();
 		}
-		
+
 		GUILayout.EndArea();
 	}
 	
