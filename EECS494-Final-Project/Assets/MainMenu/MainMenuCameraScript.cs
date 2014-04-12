@@ -21,11 +21,13 @@ public class MainMenuCameraScript : MonoBehaviour
 	
 	public static readonly string SceneNameMenu = "_MainMenu";
 
-	private int levelSelect = 0;
+	private int levelSelect;
 	private string[] levelNames = new string[] {"Map 1", "Map 2"};
 
 	public static readonly string SceneNameGame = "Jack-Map";
 	public static readonly string SceneNameGame2 = "Andrew-Map";
+
+	public PlayerDataScript playerData;
 	
 	public void Awake()
 	{
@@ -45,6 +47,7 @@ public class MainMenuCameraScript : MonoBehaviour
 			PhotonNetwork.playerName = "Guest" + Random.Range(1, 9999);
 		}
 		roomName = "Game" + Random.Range (1, 9999);
+		levelSelect = Mathf.Abs(Random.Range(-1, 1));
 		r = Random.Range(0f, 1f);
 		b = Random.Range(0f, 1f);
 		g = Random.Range(0f, 1f);
@@ -82,7 +85,7 @@ public class MainMenuCameraScript : MonoBehaviour
 		
 		
 		GUI.skin.box.fontStyle = FontStyle.Bold;
-		GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 350), "Join or Create a Room");
+		GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 350), "Create or Join a Room");
 		GUILayout.BeginArea(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 350));
 		
 		GUILayout.Space(25);
@@ -119,6 +122,7 @@ public class MainMenuCameraScript : MonoBehaviour
 		GUILayout.EndVertical();
 		GUILayout.Space(10);
 		playerColor = new Color(r, g, b);
+		playerData.playerColor = playerColor;
 		GUI.color = playerColor;
 		GUILayout.Label(menuColorPreview);
 		GUI.color = Color.white;
@@ -177,7 +181,7 @@ public class MainMenuCameraScript : MonoBehaviour
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(15);
 			GUILayout.BeginVertical();
-			GUILayout.Label(PhotonNetwork.GetRoomList() + " currently available. Join either:");
+			GUILayout.Label(PhotonNetwork.GetRoomList().Length + " games are currently available:");
 			
 			// Room listing: simply call GetRoomList: no need to fetch/poll whatever!
 			this.scrollPos = GUILayout.BeginScrollView(this.scrollPos);
