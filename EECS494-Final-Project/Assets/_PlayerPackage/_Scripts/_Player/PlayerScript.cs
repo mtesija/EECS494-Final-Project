@@ -34,8 +34,8 @@ public class PlayerScript : MonoBehaviour
 	//Shooting with your Weapon.
 	public List<WeaponInfo> WeaponList = new List<WeaponInfo>();
 	public WeaponInfo CurrentWeapon;
-	public int bulletCounter = 31;			//Number of bullets.
-	public int magazineCounter = 20;		//Number of magazines.
+	public int bulletCounter = 30;			//Number of bullets.
+	public int magazineCounter = 99;		//Number of magazines.
 	public float shootTimer = 0f;
 	public float refireTimer = 0.1f;
 	private float reloadTimer = 1.75f;
@@ -147,6 +147,7 @@ public class PlayerScript : MonoBehaviour
 						muzzleArray[2].layer = 8; //Layer see gunfire through objects. (Layer 8 = GunThroughObjects layer).
 						
 						//If the target collider doesnt have the CollidableScript component attached, spawn an impact prefab on the hit.normal.
+						/*
 						if(!hit.collider.gameObject.GetComponent<CollidableScript>())
 						{
 							GameObject _Impact;
@@ -154,7 +155,7 @@ public class PlayerScript : MonoBehaviour
 							_Impact.transform.Translate(0.0f, 0.01f, 0.0f);
 							//Position the object 0.01f upwards, so that the plane prefab wont get "stuck" into other surfaces.
 						}
-
+						*/
 						/*
 						CollidableScript collidable = hit.collider.gameObject.GetComponent<CollidableScript>();
 						if (collidable)
@@ -271,6 +272,7 @@ public class PlayerScript : MonoBehaviour
 	
 	public void ADSController()
 	{
+		/*
 		//Aim Down Sight controller. When right mouse clicked, lerp the gun towards the player his face.
 		if(Input.GetButton("Fire2") && walkingState == WalkingState.Walking || Input.GetButton("Fire2") && walkingState == WalkingState.Idle)
 		{
@@ -282,6 +284,7 @@ public class PlayerScript : MonoBehaviour
 			isAiming = false;
 			ADSHolder.localPosition = Vector3.Lerp(ADSHolder.localPosition, Vector3.zero, 0.25f);
 		}
+		*/
 	}
 	
 	public void AnimationController()
