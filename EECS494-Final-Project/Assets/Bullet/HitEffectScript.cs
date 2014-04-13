@@ -9,7 +9,7 @@ public class HitEffectScript : Photon.MonoBehaviour
 	{
 		if(GameObject.Find("PlayerData").GetComponent<PlayerDataScript>().collectData)
 		{
-			GA.API.Design.NewEvent("Bounce " + Application.loadedLevelName, this.transform.position);
+			GA.API.Design.NewEvent("Bounce", this.transform.position);
 		}
 	}
 

@@ -119,7 +119,7 @@ public class MainMenuCameraScript : MonoBehaviour
 		g = GUILayout.HorizontalSlider(g, 0, 1, GUILayout.Width(180));
 		GUILayout.EndHorizontal();
 		GUILayout.BeginHorizontal();
-		GUILayout.Label("G:", GUILayout.Width(15));
+		GUILayout.Label("B:", GUILayout.Width(15));
 		b = GUILayout.HorizontalSlider(b, 0, 1, GUILayout.Width(180));
 		GUILayout.EndHorizontal();
 		GUILayout.EndVertical();
