@@ -21,7 +21,7 @@ public class MainMenuCameraScript : MonoBehaviour
 	
 	private bool connectFailed = false;
 
-	private string serverVersion = "ETA";
+	private string serverVersion = "Kappa";
 	
 	public static readonly string SceneNameMenu = "_MainMenu";
 

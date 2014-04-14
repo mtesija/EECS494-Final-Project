@@ -10,6 +10,6 @@ public class SpawnPlayer : Photon.MonoBehaviour
 
 	public void spawn()
 	{
-		PhotonNetwork.Instantiate("Player", this.transform.position, this.transform.rotation, 0);
+		PhotonNetwork.Instantiate("Player2", this.transform.position, this.transform.rotation, 0);
 	}
 }

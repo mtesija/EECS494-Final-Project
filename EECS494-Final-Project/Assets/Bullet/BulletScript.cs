@@ -42,12 +42,7 @@ public class BulletScript : Photon.MonoBehaviour
 				if(hit.transform.CompareTag("Player"))
 				{
 					PhotonView hitPlayerView = hit.transform.GetComponent<PhotonView>();
-					if(hitPlayerView.isMine)
-					{
-						return;
-					}
-
-					hitPlayerView.RPC("modify_health", PhotonTargets.MasterClient, -1f);
+					hitPlayerView.RPC("modify_health", PhotonTargets.All, -1f);
 					PhotonNetwork.Destroy(this.gameObject);
 
 				}

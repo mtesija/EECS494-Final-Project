@@ -9,6 +9,8 @@ public class DisablePlayerActions : Photon.MonoBehaviour
 		{
 			this.gameObject.layer = 10;
 
+			this.GetComponent<CapsuleCollider>().enabled = true;
+
 			this.GetComponent<MouseLook>().enabled = false;
 			this.GetComponent<FPSInputController>().enabled = false;
 			this.GetComponent<CharacterMotor>().enabled = false;
