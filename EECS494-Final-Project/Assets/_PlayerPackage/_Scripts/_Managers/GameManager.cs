@@ -43,9 +43,9 @@ public class GameManager : MonoBehaviour
 	
 	void OnGUI()
 	{
-		GUI.Label(new Rect(Screen.width * 0.15f, Screen.height * 0.75f , 300, 100), "Bullets left: "      + playerScript.bulletCounter);
+		//GUI.Label(new Rect(Screen.width * 0.15f, Screen.height * 0.75f , 300, 100), "Bullets left: "      + playerScript.bulletCounter);
 		
-		GUI.Label(new Rect(Screen.width * 0.15f, Screen.height * 0.7f  , 300, 100), "Magazines left: "    + playerScript.magazineCounter);
+		//GUI.Label(new Rect(Screen.width * 0.15f, Screen.height * 0.7f  , 300, 100), "Magazines left: "    + playerScript.magazineCounter);
 		/*
 		GUI.Label(new Rect(Screen.width * 0.15f, Screen.height * 0.35f , 300, 100), "TERRORISTS KILLED: " + DataManager.getInstance().enemiesKilled);
 		

@@ -37,7 +37,7 @@ public class PlayerScript : MonoBehaviour
 	public int bulletCounter = 30;			//Number of bullets.
 	public int magazineCounter = 99;		//Number of magazines.
 	public float shootTimer = 0f;
-	public float refireTimer = 0.1f;
+	public float refireTimer = 1f;
 	private float reloadTimer = 1.75f;
 	private float reloadDone = 0;
 	private bool reloadWeapon = false;
@@ -76,7 +76,7 @@ public class PlayerScript : MonoBehaviour
 			}
 			
 			ADSController();
-			RecoilController();
+			//RecoilController();
 			velocityMagnitude = CharCont.velocity.magnitude;
 		}
 		
