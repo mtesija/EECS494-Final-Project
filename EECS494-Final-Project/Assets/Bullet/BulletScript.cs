@@ -41,7 +41,15 @@ public class BulletScript : Photon.MonoBehaviour
 			{
 				if(hit.transform.CompareTag("Player"))
 				{
-					//PhotonNetwork.Destroy(this.gameObject);
+					PhotonView hitPlayerView = hit.transform.GetComponent<PhotonView>();
+					if(hitPlayerView.isMine)
+					{
+						return;
+					}
+
+					hitPlayerView.RPC("modify_health", PhotonTargets.MasterClient, -1f);
+					PhotonNetwork.Destroy(this.gameObject);
+
 				}
 
 				GameObject hitEffect = PhotonNetwork.Instantiate("BulletHitEffect", this.transform.position - hit.normal * .1f, Quaternion.LookRotation(hit.normal), 0);

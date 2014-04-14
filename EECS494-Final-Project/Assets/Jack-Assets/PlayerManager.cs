@@ -98,7 +98,7 @@ using System.Collections;
 
 
 
-public class PlayerManager : MonoBehaviour {
+public class PlayerManager : Photon.MonoBehaviour {
 	// ===================================================================================================
 	// enumerations used to determine behavior.
 	//
@@ -150,7 +150,16 @@ public class PlayerManager : MonoBehaviour {
 	public void full_health(float time){ StartCoroutine( refreshHealth(time, 0) ); }
 
 	// modify_health(health)
-	public void modify_health(float amount){ modify_health(amount, -1); }
+	[RPC]
+	public void modify_health(float amount)
+	{ 
+		if(playerData.collectHitData)
+		{
+			GA.API.Design.NewEvent("Hit", this.transform.position);
+		}
+
+		modify_health(amount, -1); 
+	}
 
 	// modify_health(health, time)
 	public void modify_health(float amount, float time)
@@ -214,6 +223,8 @@ public class PlayerManager : MonoBehaviour {
 	private HorizontalOptions healthbar_horizontal_location;
 	private VerticalOptions healthbar_vertical_location;
 	private Vector2 unit_portrait_position, unit_portrait_size;
+	private SpawnPlayer spawnScript;
+	private PlayerDataScript playerData;
 	#endregion
 	// ===================================================================================================
 	// ===================================================================================================
@@ -338,7 +349,8 @@ public class PlayerManager : MonoBehaviour {
 
 		}
 		
-		
+		spawnScript = GameObject.Find("Spawner").GetComponent<SpawnPlayer>();
+		playerData = GameObject.Find("PlayerData").GetComponent<PlayerDataScript>();
 	}
 	#endregion
 	// ===================================================================================================
@@ -361,10 +373,20 @@ public class PlayerManager : MonoBehaviour {
 		if(cur_secondary > max_secondary) cur_secondary = max_secondary;
 		else if(cur_secondary < 0) cur_secondary = 0;
 
-		if( Input.GetKeyDown( KeyCode.P ) ) modify_health(-15,0.3f);
-		if( Input.GetKeyDown( KeyCode.I ) ) modify_secondary(-15, 0.5f);
-		if( Input.GetKeyDown( KeyCode.O ) ) modify_health(25,0.3f);
-		if( Input.GetKeyDown( KeyCode.U ) ) modify_secondary(5,0.3f);
+
+
+		if(cur_health == 0)
+		{
+			if(playerData.collectDeathData)
+			{
+				GA.API.Design.NewEvent("Death", this.transform.position);
+			}
+			spawnScript.spawn();
+			PhotonNetwork.Destroy(this.gameObject);
+		}
+
+
+
 
 	}
 	#endregion
