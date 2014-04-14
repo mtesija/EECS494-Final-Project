@@ -7,7 +7,7 @@ public class HitEffectScript : Photon.MonoBehaviour
 
 	void Awake()
 	{
-		if(GameObject.Find("PlayerData").GetComponent<PlayerDataScript>().collectData)
+		if(GameObject.Find("PlayerData").GetComponent<PlayerDataScript>().collectBounceData)
 		{
 			GA.API.Design.NewEvent("Bounce", this.transform.position);
 		}

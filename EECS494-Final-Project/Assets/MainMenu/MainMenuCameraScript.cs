@@ -10,8 +10,10 @@ public class MainMenuCameraScript : MonoBehaviour
 	float r = 0;
 	float b = 0;
 	float g = 0;
-
-	private bool collectData = true;
+	
+	private bool collectHitData = false;
+	private bool collectDeathData = true;
+	private bool collectBounceData = false;
 	
 	private Texture2D menuColorPreview;
 
@@ -19,7 +21,7 @@ public class MainMenuCameraScript : MonoBehaviour
 	
 	private bool connectFailed = false;
 
-	private string serverVersion = "ZETA";
+	private string serverVersion = "ETA";
 	
 	public static readonly string SceneNameMenu = "_MainMenu";
 
@@ -88,8 +90,8 @@ public class MainMenuCameraScript : MonoBehaviour
 		
 		
 		GUI.skin.box.fontStyle = FontStyle.Bold;
-		GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 350), "Create or Join a Room");
-		GUILayout.BeginArea(new Rect((Screen.width - 400) / 2, (Screen.height - 350) / 2, 400, 350));
+		GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 400) / 2, 400, 400), "Create or Join a Room");
+		GUILayout.BeginArea(new Rect((Screen.width - 400) / 2, (Screen.height - 400) / 2, 400, 400));
 		
 		GUILayout.Space(25);
 		
@@ -132,6 +134,17 @@ public class MainMenuCameraScript : MonoBehaviour
 		GUILayout.Space(15);
 		GUILayout.EndHorizontal();
 		
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(10);
+		collectDeathData = GUILayout.Toggle(collectDeathData, "Collect Death Data");
+		playerData.collectDeathData = collectDeathData;
+		collectHitData = GUILayout.Toggle(collectHitData, "Collect Hit Data");
+		playerData.collectHitData = collectHitData;
+		collectBounceData = GUILayout.Toggle(collectBounceData, "Collect Bounce Data");
+		playerData.collectBounceData = collectBounceData;
+		GUILayout.Space(10);
+		GUILayout.EndHorizontal();
+
 		GUILayout.Space(10);
 
 		// Join room by title
@@ -152,13 +165,6 @@ public class MainMenuCameraScript : MonoBehaviour
 		{
 			PhotonNetwork.CreateRoom(this.roomName, new RoomOptions() { maxPlayers = 5 }, null);
 		}
-		GUILayout.Space(15);
-		GUILayout.EndHorizontal();
-		
-		GUILayout.BeginHorizontal();
-		GUILayout.Space(15);
-		collectData = GUILayout.Toggle(collectData, "Collect Data");
-		playerData.collectData = collectData;
 		GUILayout.Space(15);
 		GUILayout.EndHorizontal();
 
