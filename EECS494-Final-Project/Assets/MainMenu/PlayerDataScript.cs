@@ -4,8 +4,10 @@ using System.Collections;
 public class PlayerDataScript : MonoBehaviour {
 
 	public Color playerColor = Color.white;
-
-	public bool collectData = true;
+	
+	public bool collectHitData = false;
+	public bool collectDeathData = true;
+	public bool collectBounceData = false;
 
 	void Awake()
 	{

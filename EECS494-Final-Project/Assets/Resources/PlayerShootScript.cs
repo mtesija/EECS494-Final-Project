@@ -27,7 +27,7 @@ public class PlayerShootScript : Photon.MonoBehaviour
 		{
 			if(Input.GetMouseButtonDown(0))
 			{
-				shootDelayTimer = .5f;
+				shootDelayTimer = 1f;
 
 				GameObject bullet = PhotonNetwork.Instantiate("Bullet", this.transform.position, this.transform.rotation, 0) as GameObject;
 				PhotonView bulletView = bullet.GetComponent<PhotonView>();

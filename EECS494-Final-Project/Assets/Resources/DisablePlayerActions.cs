@@ -13,6 +13,7 @@ public class DisablePlayerActions : Photon.MonoBehaviour
 			this.GetComponent<FPSInputController>().enabled = false;
 			this.GetComponent<CharacterMotor>().enabled = false;
 			this.GetComponent<CharacterController>().enabled = false;
+			this.GetComponent<PlayerManager>().enabled = false;
 			
 			this.GetComponentInChildren<Camera>().enabled = false;
 			this.GetComponentInChildren<GUILayer>().enabled = false;
