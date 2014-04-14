@@ -57,9 +57,13 @@ public class PlayerScript : MonoBehaviour
 	private float AdjustTimer = 0.3f;
 	private float baseAdjustTimer = 0.3f;
 
+	private PlayerDataScript playerData;
+
 	void Start()
 	{	
 		pauseScript = FindObjectOfType(typeof(PauseScript)) as PauseScript;
+
+		playerData = GameObject.Find ("PlayerData").GetComponent<PlayerDataScript> ();
 		
 		CurrentWeapon = WeaponList[0];
 	}
@@ -130,9 +134,9 @@ public class PlayerScript : MonoBehaviour
 					{	
 						GameObject bullet = PhotonNetwork.Instantiate("Bullet", this.transform.position, this.transform.rotation, 0) as GameObject;
 						bullet.rigidbody.velocity = 10*ray.direction;
+
 						PhotonView bulletView = bullet.GetComponent<PhotonView>();
-						Color color = new Color(0, 1, 0, 1);
-						bulletView.RPC("SetColor", PhotonTargets.All, color.r, color.g, color.b, color.a);
+						bulletView.RPC("SetColor", PhotonTargets.All, playerData.playerColor.r, playerData.playerColor.g, playerData.playerColor.b, playerData.playerColor.a);
 
 						/*
 						GameObject redBullet = Instantiate(Resources.Load("Bullet"), this.transform.position, Quaternion.identity) as GameObject;
