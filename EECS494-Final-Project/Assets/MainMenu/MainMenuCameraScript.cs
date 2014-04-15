@@ -21,7 +21,7 @@ public class MainMenuCameraScript : MonoBehaviour
 	
 	private bool connectFailed = false;
 
-	private string serverVersion = "Kappa";
+	private string serverVersion = "LAMBDA";
 	
 	public static readonly string SceneNameMenu = "_MainMenu";
 
@@ -53,9 +53,9 @@ public class MainMenuCameraScript : MonoBehaviour
 		}
 		roomName = "Game" + Random.Range (1, 9999);
 		levelSelect = Mathf.Abs(Random.Range(-1, 1));
-		r = Random.Range(0f, 1f);
-		b = Random.Range(0f, 1f);
-		g = Random.Range(0f, 1f);
+		r = Random.Range(.2f, 1f);
+		b = Random.Range(.2f, 1f);
+		g = Random.Range(.2f, 1f);
 		menuColorPreview = new Texture2D(150, 90);
 	}
 	
@@ -114,15 +114,15 @@ public class MainMenuCameraScript : MonoBehaviour
 		GUILayout.Label("Player Color:", GUILayout.Width(100));
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("R:", GUILayout.Width(15));
-		r = GUILayout.HorizontalSlider(r, 0, 1, GUILayout.Width(180));
+		r = GUILayout.HorizontalSlider(r, .2f, 1, GUILayout.Width(180));
 		GUILayout.EndHorizontal();
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("G:", GUILayout.Width(15));
-		g = GUILayout.HorizontalSlider(g, 0, 1, GUILayout.Width(180));
+		g = GUILayout.HorizontalSlider(g, .2f, 1, GUILayout.Width(180));
 		GUILayout.EndHorizontal();
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("B:", GUILayout.Width(15));
-		b = GUILayout.HorizontalSlider(b, 0, 1, GUILayout.Width(180));
+		b = GUILayout.HorizontalSlider(b, .2f, 1, GUILayout.Width(180));
 		GUILayout.EndHorizontal();
 		GUILayout.EndVertical();
 		GUILayout.Space(10);

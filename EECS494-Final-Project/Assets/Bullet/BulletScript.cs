@@ -39,12 +39,21 @@ public class BulletScript : Photon.MonoBehaviour
 			RaycastHit hit;
 			if(Physics.Raycast(this.transform.position, this.rigidbody.velocity, out hit, hitLength))
 			{
-				if(hit.transform.CompareTag("Player"))
+				if(hit.transform.CompareTag("Shield"))
+				{
+					PhotonNetwork.Destroy(this.gameObject);
+				}
+				else if(hit.transform.CompareTag("Player"))
 				{
 					PhotonView hitPlayerView = hit.transform.GetComponent<PhotonView>();
+
+					if(hitPlayerView.isMine)
+					{
+						return;
+					}
+
 					hitPlayerView.RPC("modify_health", PhotonTargets.All, -1f);
 					PhotonNetwork.Destroy(this.gameObject);
-
 				}
 
 				GameObject hitEffect = PhotonNetwork.Instantiate("BulletHitEffect", this.transform.position - hit.normal * .1f, Quaternion.LookRotation(hit.normal), 0);
