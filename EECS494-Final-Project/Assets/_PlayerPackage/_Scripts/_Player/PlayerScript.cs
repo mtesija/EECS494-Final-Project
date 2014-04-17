@@ -59,6 +59,9 @@ public class PlayerScript : MonoBehaviour
 
 	private PlayerDataScript playerData;
 
+	private LaserScript laserScript;
+	private GameObject barrel;
+	public Animator anim;
 	void Start()
 	{	
 		pauseScript = FindObjectOfType(typeof(PauseScript)) as PauseScript;
@@ -66,10 +69,15 @@ public class PlayerScript : MonoBehaviour
 		playerData = GameObject.Find ("PlayerData").GetComponent<PlayerDataScript> ();
 		
 		CurrentWeapon = WeaponList[0];
+		//laserScript = gameObject.GetComponentInChildren<LaserScript> ();
+		laserScript = gameObject.transform.root.GetComponentInChildren<LaserScript> ();
+		barrel = GameObject.Find("Barrel");
+		anim = gameObject.transform.root.GetComponentInChildren<Animator> ();
 	}
 	
 	public void FixedUpdate()
 	{
+		Debug.Log(barrel.transform.position);
 		if(!pauseScript.pause)
 		{
 			AdjustTimer -= 1 * Time.deltaTime;
@@ -103,12 +111,14 @@ public class PlayerScript : MonoBehaviour
 			{
 				if(hit.distance >= 4) // Cap its minimum distance to 4, so that your gun wont glitch out of position.
 				{
+
 					Vector3 relativePos = hit.point - CurrentWeapon.WeaponTransform.transform.position;
 					Quaternion rotation = Quaternion.LookRotation(relativePos);
 					//CurrentWeapon.WeaponTransform.transform.rotation = rotation;
 					
 					//if the distance is smaller than 4, rotate the Gun towards the middle of the screen.
 					CurrentWeapon.WeaponTransform.transform.rotation = Quaternion.Slerp(CurrentWeapon.WeaponTransform.transform.rotation, rotation, Time.deltaTime * 5f);
+
 				}
 			}
 			else 
@@ -132,8 +142,8 @@ public class PlayerScript : MonoBehaviour
 				{
 					if(bulletCounter > 0)
 					{	
-						GameObject bullet = PhotonNetwork.Instantiate("Bullet", this.transform.position, this.transform.rotation, 0) as GameObject;
-						bullet.rigidbody.velocity = 10*ray.direction;
+						GameObject bullet = PhotonNetwork.Instantiate("Bullet", barrel.transform.position, this.transform.rotation, 0) as GameObject;
+						bullet.rigidbody.velocity = 10*laserScript.ray.direction;
 
 						PhotonView bulletView = bullet.GetComponent<PhotonView>();
 						bulletView.RPC("SetColor", PhotonTargets.All, playerData.playerColor.r, playerData.playerColor.g, playerData.playerColor.b, playerData.playerColor.a);
@@ -293,6 +303,7 @@ public class PlayerScript : MonoBehaviour
 	
 	public void AnimationController()
 	{
+		/*
 		//Switch between multiple character animations when correct parameters have been met. Fade between animations with a 0.2f speed.
 		if(reloadWeapon == true)
 		{
@@ -336,6 +347,43 @@ public class PlayerScript : MonoBehaviour
 				WalkAnimationHolder.animation.CrossFade("IdleZoomed", 0.2f);
 			}		
 		}
+			*/
+
+		if (Input.GetAxis ("Horizontal") < 0) {
+			anim.SetBool("lft",true);
+			anim.SetBool("rgt",false);
+		}
+		else if (Input.GetAxis ("Horizontal") > 0) {
+			anim.SetBool("rgt",true);
+			anim.SetBool("lft",false);
+		}
+		else{
+			anim.SetBool("rgt",false);
+			anim.SetBool("lft",false);
+		}
+		if (Input.GetAxis ("Vertical") > 0) {
+			anim.SetBool("fwd",true);
+			anim.SetBool("bwd",false);
+		}
+		else if (Input.GetAxis ("Vertical") < 0) {
+			anim.SetBool("fwd",false);
+			anim.SetBool("bwd",true);
+		}
+		else{
+			anim.SetBool("fwd",false);
+			anim.SetBool("bwd",false);
+		}
+		if (CharCont.isGrounded == false && Input.GetButton("Jump")) {
+			anim.SetBool("jump", true);
+		}
+		else {
+			anim.SetBool("jump", false);		
+		}
+
+		//if (anim.GetBool ("ground") == true) {
+		//	CharCont.
+		//}
+
 	}
 	
 	public void RecoilController()

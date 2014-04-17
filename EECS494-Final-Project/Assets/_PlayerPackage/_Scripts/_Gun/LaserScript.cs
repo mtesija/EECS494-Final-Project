@@ -11,7 +11,7 @@ public class LaserScript : MonoBehaviour
 	private float rayDistance = 600;
 	
 	public GameObject laserCircle;
-	
+	public Ray ray; 
 	void Start()
 	{
 		LineRenderer lineRenderer = gameObject.AddComponent<LineRenderer>();
@@ -30,7 +30,7 @@ public class LaserScript : MonoBehaviour
 		LineRenderer lineRenderer = GetComponent<LineRenderer>();
 		lineRenderer.SetPosition(1,new Vector3(1,0,5000));
 		
-		Ray ray = new Ray(transform.position, transform.forward);
+		ray = new Ray(transform.position, transform.forward);
 		RaycastHit hit;
 		
 		Debug.DrawRay(transform.position, transform.forward * rayDistance, Color.blue);
