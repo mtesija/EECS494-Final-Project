@@ -4,7 +4,10 @@ using System.Collections;
 [RequireComponent(typeof(PhotonView))]
 public class BulletScript : Photon.MonoBehaviour
 {
-	private float speed = 10;
+	private float minSpeed = 8;
+	private float maxSpeed = 14;
+	private float speed = 14;
+
 	private Color color = Color.white;
 
 	private float hitLength = .4f;
@@ -23,6 +26,7 @@ public class BulletScript : Photon.MonoBehaviour
 		if(photonView.isMine)
 		{
 			this.isOwner = true;
+			speed = maxSpeed;
 			this.rigidbody.velocity = this.transform.up * speed;
 		}
 		else
@@ -60,6 +64,8 @@ public class BulletScript : Photon.MonoBehaviour
 				PhotonView hitView = hitEffect.GetComponent<PhotonView>();
 				hitView.RPC("SetColor", PhotonTargets.All, this.color.r, this.color.g, this.color.b, this.color.a);
 				hitView.RPC("SetSize", PhotonTargets.All, this.transform.localScale.x);
+
+				speed = Mathf.Clamp(speed * .8f, minSpeed, maxSpeed);
 
 				this.rigidbody.velocity = Vector3.Reflect(this.rigidbody.velocity, hit.normal).normalized * speed;
 			}
