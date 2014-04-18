@@ -77,7 +77,7 @@ public class PlayerScript : MonoBehaviour
 	
 	public void FixedUpdate()
 	{
-		Debug.Log(barrel.transform.position);
+		//Debug.Log(barrel.transform.position);
 		if(!pauseScript.pause)
 		{
 			AdjustTimer -= 1 * Time.deltaTime;

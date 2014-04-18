@@ -55,8 +55,9 @@ public class DisablePlayerActions2 : Photon.MonoBehaviour
 			this.GetComponentInChildren<PlayerScript>().enabled = false;
 			this.GetComponentInChildren<LaserScript>().enabled = false;
 
-			IKLimb [] iklimb = this.GetComponentsInChildren<IKLimb>();
-			foreach(IKLimb ik in iklimb){
+			ikLimb [] iklimb = this.GetComponentsInChildren<ikLimb>();
+			foreach(ikLimb ik in iklimb){
+				if(ik != null)
 				ik.enabled = false;
 			}
 			
