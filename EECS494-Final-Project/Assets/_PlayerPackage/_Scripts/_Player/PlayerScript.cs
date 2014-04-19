@@ -87,7 +87,7 @@ public class PlayerScript : MonoBehaviour
 				AdjustTimer = 0f;
 			}
 			
-			ADSController();
+			//ADSController();
 			//RecoilController();
 			velocityMagnitude = CharCont.velocity.magnitude;
 		}
@@ -117,7 +117,7 @@ public class PlayerScript : MonoBehaviour
 					//CurrentWeapon.WeaponTransform.transform.rotation = rotation;
 					
 					//if the distance is smaller than 4, rotate the Gun towards the middle of the screen.
-					CurrentWeapon.WeaponTransform.transform.rotation = Quaternion.Slerp(CurrentWeapon.WeaponTransform.transform.rotation, rotation, Time.deltaTime * 5f);
+					CurrentWeapon.WeaponTransform.transform.rotation = Quaternion.Slerp(CurrentWeapon.WeaponTransform.transform.rotation, rotation, Time.deltaTime * 20f);
 
 				}
 			}
@@ -142,6 +142,7 @@ public class PlayerScript : MonoBehaviour
 				{
 					if(bulletCounter > 0)
 					{	
+						anim.SetTrigger("fire");
 						GameObject bullet = PhotonNetwork.Instantiate("Bullet", barrel.transform.position, this.transform.rotation, 0) as GameObject;
 						bullet.rigidbody.velocity = 10*laserScript.ray.direction;
 
@@ -155,11 +156,14 @@ public class PlayerScript : MonoBehaviour
 						*/
 
 						//Spawn Muzzles at the end of the gun barrel.
+
+						/*
 						GameObject _Muzzle;
 						_Muzzle = Instantiate(muzzleArray[Random.Range(0,10)], CurrentWeapon.gunBarrelPoint.transform.position, CurrentWeapon.gunBarrelPoint.transform.rotation) as GameObject; //Make a MuzzleFlash. //Rotate it toward the gun.
 						_Muzzle.transform.parent = WeaponHolder.transform;
 						muzzleArray[2].layer = 8; //Layer see gunfire through objects. (Layer 8 = GunThroughObjects layer).
-						
+						*/
+
 						//If the target collider doesnt have the CollidableScript component attached, spawn an impact prefab on the hit.normal.
 						/*
 						if(!hit.collider.gameObject.GetComponent<CollidableScript>())
@@ -194,6 +198,7 @@ public class PlayerScript : MonoBehaviour
 						*/
 
 						//Recoil while shooting.
+						/*
 						if(!isAiming)
 						{
 							CurrentRecoil1 += new Vector3(CurrentWeapon.RecoilRotation.x, Random.Range(-CurrentWeapon.RecoilRotation.y, CurrentWeapon.RecoilRotation.y));
@@ -204,7 +209,7 @@ public class PlayerScript : MonoBehaviour
 							CurrentRecoil1 += new Vector3(CurrentWeapon.RecoilRotation.x, Random.Range(-CurrentWeapon.RecoilRotation.y, CurrentWeapon.RecoilRotation.y));
 							CurrentRecoil3 += new Vector3(Random.Range(-CurrentWeapon.RecoilKickBackADS.x, CurrentWeapon.RecoilKickBackADS.x), Random.Range(-CurrentWeapon.RecoilKickBackADS.y, CurrentWeapon.RecoilKickBackADS.y), CurrentWeapon.RecoilKickBackADS.z);
 						}
-						
+						*/
 						audio.PlayOneShot(gunFire);
 						bulletCounter -= 1;
 						shootTimer = 0;
@@ -378,6 +383,26 @@ public class PlayerScript : MonoBehaviour
 		}
 		else {
 			anim.SetBool("jump", false);		
+		}
+
+		if(Input.GetKeyDown(KeyCode.Q)){
+			anim.SetTrigger("roll");
+		}
+
+		if (Input.GetKeyDown (KeyCode.LeftControl)) {
+			anim.SetBool ("crouch", true);
+		} 
+
+		if (Input.GetKeyUp (KeyCode.LeftControl)) {
+			anim.SetBool ("crouch", false);	
+		}
+
+		if (Input.GetMouseButton (1)) {
+			anim.SetBool ("shield", true);
+		}
+
+		else {
+			anim.SetBool ("shield", false);
 		}
 
 		//if (anim.GetBool ("ground") == true) {
