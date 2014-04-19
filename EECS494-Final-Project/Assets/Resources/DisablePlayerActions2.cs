@@ -37,17 +37,19 @@ public class DisablePlayerActions2 : Photon.MonoBehaviour
 			foreach(AudioListener a in al){
 				a.enabled = false;
 			}
-			
+
+			/*
 			Animator [] at= this.GetComponentsInChildren<Animator>();
 			foreach(Animator ani in at){
 				ani.enabled = false;
 			}
-			
+
+
 			Animation [] animation = this.GetComponentsInChildren<Animation>();
 			foreach(Animation anim in animation){
 				anim.enabled = false;
 			}
-			
+			*/
 			AudioSource [] asource = this.GetComponentsInChildren<AudioSource>();
 			foreach(AudioSource Asource in asource){
 				Asource.enabled = false;
