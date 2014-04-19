@@ -38,8 +38,7 @@ public class LaserScript2 : MonoBehaviour
 		{			
 			if(hit.collider)
 			{
-				Debug.Log(hit.distance);
-				lineRenderer.SetPosition(1, new Vector3(0, 0, hit.distance) * 5); 	//Create a lineRenderer forward until the point it collides with a collidable object.
+				lineRenderer.SetPosition(1, new Vector3(0, 0, hit.distance)); 	//Create a lineRenderer forward until the point it collides with a collidable object.
 				laserCircle.renderer.enabled = true;							//Enable the lasercircle if it hits a collider.
 				laserCircle.transform.position = hit.point + hit.normal * .05f;						//Put the lasercircle at the end of the hit.point of the raycast.
 				laserCircle.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);	//Make sure the lasercircle is always "facing" an outwards position of where it impacts.

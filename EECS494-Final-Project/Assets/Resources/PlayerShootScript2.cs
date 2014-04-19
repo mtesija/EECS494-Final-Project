@@ -3,7 +3,9 @@ using System.Collections;
 
 public class PlayerShootScript2 : Photon.MonoBehaviour
 {
-	float shootDelayTimer = .5f;
+	public float ammo = 20;
+
+	float shootDelayTimer = .15f;
 
 	private Color color = Color.white;
 
@@ -38,14 +40,21 @@ public class PlayerShootScript2 : Photon.MonoBehaviour
 		}
 		else
 		{
-			if(Input.GetMouseButtonDown(0))
+			if(Input.GetMouseButtonDown(0) && ammo > 0)
 			{
-				shootDelayTimer = 1f;
+				shootDelayTimer = .3f;
+				ammo--;
 
 				GameObject bullet = PhotonNetwork.Instantiate("Bullet", this.transform.position, this.transform.rotation, 0) as GameObject;
 				PhotonView bulletView = bullet.GetComponent<PhotonView>();
 				bulletView.RPC("SetColor", PhotonTargets.All, color.r, color.g, color.b, color.a);
 			}
 		}
+	}
+
+	[RPC]
+	void AddAmmo()
+	{
+		ammo++;
 	}
 }

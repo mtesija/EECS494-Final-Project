@@ -8,6 +8,8 @@ public class BulletScript : Photon.MonoBehaviour
 	private float maxSpeed = 14;
 	private float speed = 14;
 
+	private float bulletDamage = 5;
+
 	private Color color = Color.white;
 
 	private float hitLength = .4f;
@@ -27,7 +29,7 @@ public class BulletScript : Photon.MonoBehaviour
 		{
 			this.isOwner = true;
 			speed = maxSpeed;
-			this.rigidbody.velocity = this.transform.up * speed;
+			this.rigidbody.velocity = this.transform.forward * speed;
 		}
 		else
 		{
@@ -45,6 +47,8 @@ public class BulletScript : Photon.MonoBehaviour
 			{
 				if(hit.transform.CompareTag("Shield"))
 				{
+					PhotonView hitShieldView = hit.transform.GetComponent<PhotonView>();
+					hitShieldView.RPC("AddAmmo", PhotonTargets.All);
 					PhotonNetwork.Destroy(this.gameObject);
 				}
 				else if(hit.transform.CompareTag("Player"))
@@ -56,7 +60,7 @@ public class BulletScript : Photon.MonoBehaviour
 						return;
 					}
 
-					hitPlayerView.RPC("modify_health", PhotonTargets.All, -1f);
+					hitPlayerView.RPC("modify_health", PhotonTargets.All, bulletDamage);
 					PhotonNetwork.Destroy(this.gameObject);
 				}
 
@@ -66,6 +70,7 @@ public class BulletScript : Photon.MonoBehaviour
 				hitView.RPC("SetSize", PhotonTargets.All, this.transform.localScale.x);
 
 				speed = Mathf.Clamp(speed * .8f, minSpeed, maxSpeed);
+				bulletDamage = Mathf.Clamp(bulletDamage - 1, 1, 5);
 
 				this.rigidbody.velocity = Vector3.Reflect(this.rigidbody.velocity, hit.normal).normalized * speed;
 			}
