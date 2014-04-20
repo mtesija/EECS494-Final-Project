@@ -10,7 +10,6 @@ public class PlayerScript : MonoBehaviour
 	public GameObject bullet;
 	public CharacterController CharCont;
 	public CharacterMotor CharMotor;
-	
 	public Transform WeaponHolder;
 	public Transform FPSCharacter;
 	public Transform WalkAnimationHolder;
@@ -310,13 +309,13 @@ public class PlayerScript : MonoBehaviour
 		{
 			isAiming = true;
 			//ADSHolder.localPosition = Vector3.Lerp(ADSHolder.localPosition, CurrentWeapon.Scopes[CurrentWeapon.CurrentScope].adsPosition, 0.25f);
-			camera.transform.localPosition = Vector3.Lerp(camera.transform.localPosition, new Vector3(0,0,1),0.25f);
+			Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, new Vector3(0,0,1),0.25f);
 
 		}
 		else
 		{
 			isAiming = false;
-			camera.transform.localPosition = Vector3.Lerp(camera.transform.localPosition, new Vector3(1,0,-2),0.25f);
+			Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, new Vector3(1,0,-2),0.25f);
 			//ADSHolder.localPosition = Vector3.Lerp(ADSHolder.localPosition, Vector3.zero, 0.25f);
 		}
 
