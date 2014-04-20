@@ -18,6 +18,8 @@ public class PlayerScript : MonoBehaviour
 	public Transform ADSHolder;
 	public Transform RecoilHolder;
 	public Transform RecoilHolderCamera;
+	public Transform leftarmref;
+	public Transform rightarmref;
 	
 	//Player Variables
 	public WalkingState walkingState = WalkingState.Idle;
@@ -87,7 +89,7 @@ public class PlayerScript : MonoBehaviour
 				AdjustTimer = 0f;
 			}
 			
-			//ADSController();
+			ADSController();
 			//RecoilController();
 			velocityMagnitude = CharCont.velocity.magnitude;
 		}
@@ -105,7 +107,7 @@ public class PlayerScript : MonoBehaviour
 		RaycastHit hit;
 		Debug.DrawRay(Camera.main.transform.position, Camera.main.transform.forward * rayDistance, Color.red);
 		
-		if(Physics.Raycast(ray, out hit, rayDistance) && walkingState != WalkingState.Running)
+		if(Physics.Raycast(ray, out hit, rayDistance) && walkingState != WalkingState.Running && !Input.GetButton("Fire2"))
 		{				
 			if(!isAiming)
 			{
@@ -122,17 +124,17 @@ public class PlayerScript : MonoBehaviour
 			}
 			else 
 			{
-				/*
+
 				if(hit.distance >= 4) // Cap its minimum distance to 4, so that your gun wont glitch out of position.
 				{
 					//Uncomment these lines if you want your ADS to focus on targets and keeping the laser on your objects. This will cause your Sight to jump out of your FOV.
 					Vector3 relativePos = hit.point - CurrentWeapon.WeaponTransform.transform.position;
 					Quaternion rotation = Quaternion.LookRotation(relativePos);
 					CurrentWeapon.WeaponTransform.transform.rotation = Quaternion.Slerp(CurrentWeapon.WeaponTransform.transform.rotation, rotation, Time.deltaTime * 7f);
-				} */
+				} 
 				
 				//Comment this line if you want your ADS to go back to its forward position at all times. It wont focus on new targets. Uncomments the above if-statement.
-				CurrentWeapon.WeaponTransform.transform.rotation = transform.rotation;
+				//CurrentWeapon.WeaponTransform.transform.rotation = transform.rotation;
 			}
 			
 			if(Input.GetButton("Fire1") && reloadWeapon == false && walkingState != WalkingState.Running)
@@ -251,7 +253,7 @@ public class PlayerScript : MonoBehaviour
 		//Adjusting the speed of the character controller.
 		if((Input.GetAxis("Horizontal") != 0 || Input.GetAxis("Vertical") != 0) && velocityMagnitude > 0)
 		{
-			if(Input.GetButton("Run"))
+			if(Input.GetButton("Run") && !isAiming)
 			{
 				anim.SetBool("run",true);
 				/*
@@ -283,10 +285,15 @@ public class PlayerScript : MonoBehaviour
 				{
 					walkingState = WalkingState.Walking;
 				
-					CharMotor.movement.maxForwardSpeed = walkSpeed / 2;
-					CharMotor.movement.maxSidewaysSpeed = walkSpeed / 2;
-					CharMotor.movement.maxBackwardsSpeed = walkSpeed / 2;
+					CharMotor.movement.maxForwardSpeed = walkSpeed / 10;
+					CharMotor.movement.maxSidewaysSpeed = walkSpeed / 10;
+					CharMotor.movement.maxBackwardsSpeed = walkSpeed / 10;
 				}
+			}
+			if(Input.GetButton("Fire2")){
+				CharMotor.movement.maxForwardSpeed = 0;
+				CharMotor.movement.maxSidewaysSpeed = 0;
+				CharMotor.movement.maxBackwardsSpeed = 0;
 			}
 		}
 		else 
@@ -297,19 +304,23 @@ public class PlayerScript : MonoBehaviour
 	
 	public void ADSController()
 	{
-		/*
+
 		//Aim Down Sight controller. When right mouse clicked, lerp the gun towards the player his face.
-		if(Input.GetButton("Fire2") && walkingState == WalkingState.Walking || Input.GetButton("Fire2") && walkingState == WalkingState.Idle)
+		if(Input.GetKey(KeyCode.E) && walkingState == WalkingState.Walking || Input.GetKey(KeyCode.E) && walkingState == WalkingState.Idle)
 		{
 			isAiming = true;
-			ADSHolder.localPosition = Vector3.Lerp(ADSHolder.localPosition, CurrentWeapon.Scopes[CurrentWeapon.CurrentScope].adsPosition, 0.25f);
+			//ADSHolder.localPosition = Vector3.Lerp(ADSHolder.localPosition, CurrentWeapon.Scopes[CurrentWeapon.CurrentScope].adsPosition, 0.25f);
+			camera.transform.localPosition = Vector3.Lerp(camera.transform.localPosition, new Vector3(0,0,1),0.25f);
+
 		}
 		else
 		{
 			isAiming = false;
-			ADSHolder.localPosition = Vector3.Lerp(ADSHolder.localPosition, Vector3.zero, 0.25f);
+			camera.transform.localPosition = Vector3.Lerp(camera.transform.localPosition, new Vector3(1,0,-2),0.25f);
+			//ADSHolder.localPosition = Vector3.Lerp(ADSHolder.localPosition, Vector3.zero, 0.25f);
 		}
-		*/
+
+			
 	}
 	
 	public void AnimationController()
@@ -374,8 +385,10 @@ public class PlayerScript : MonoBehaviour
 			anim.SetBool("lft",false);
 		}
 		if (Input.GetAxis ("Vertical") > 0) {
+			anim.applyRootMotion = true;
 			anim.SetBool("fwd",true);
 			anim.SetBool("bwd",false);
+			anim.applyRootMotion = false;
 		}
 		else if (Input.GetAxis ("Vertical") < 0) {
 			anim.SetBool("fwd",false);
@@ -393,7 +406,9 @@ public class PlayerScript : MonoBehaviour
 		}
 
 		if(Input.GetKeyDown(KeyCode.Q)){
+			anim.applyRootMotion = true;
 			anim.SetTrigger("roll");
+			anim.applyRootMotion = false;
 		}
 
 		if (Input.GetKeyDown (KeyCode.LeftControl)) {
@@ -404,13 +419,23 @@ public class PlayerScript : MonoBehaviour
 			anim.SetBool ("crouch", false);	
 		}
 
-		if (Input.GetMouseButton (1)) {
+		if(Input.GetButton("Fire2")) {
 			anim.SetBool ("shield", true);
+			/*
+			ADSHolder.transform.position = new Vector3(-0.0835f,0.313f,-0.00117f);
+			leftarmref.transform.position = new Vector3(-0.7445076f,-0.0347f,-0.3105f);
+			rightarmref.transform.position = new Vector3(0.75358f,0.3511465f,0.10297f);
+			*/
 		}
-
 		else {
 			anim.SetBool ("shield", false);
 		}
+
+		if(Input.GetKeyDown(KeyCode.T)){
+		    anim.applyRootMotion = true;
+			anim.SetBool ("hitfront", true);
+			anim.applyRootMotion = false;
+	     }
 
 		//if (anim.GetBool ("ground") == true) {
 		//	CharCont.

@@ -38,6 +38,17 @@ public class PositionRotationNetworking : Photon.MonoBehaviour
 			stream.SendNext(anim.GetBool("bwd"));
 			stream.SendNext(anim.GetBool("lft"));
 			stream.SendNext(anim.GetBool("rgt"));
+			stream.SendNext(anim.GetBool("jump"));
+			stream.SendNext(anim.GetBool("fire"));
+			stream.SendNext(anim.GetBool("roll"));
+			stream.SendNext(anim.GetBool("crouch"));
+			stream.SendNext(anim.GetBool("shield"));
+			stream.SendNext(anim.GetBool("run"));
+			stream.SendNext(anim.GetBool("hitfront"));
+			stream.SendNext(anim.GetBool("hithead"));
+			stream.SendNext(anim.GetBool("hitback"));
+			stream.SendNext(anim.GetBool("die"));
+
 		}
 		else
 		{
@@ -55,7 +66,16 @@ public class PositionRotationNetworking : Photon.MonoBehaviour
 			anim.SetBool("bwd",(bool)stream.ReceiveNext());
 			anim.SetBool("lft",(bool)stream.ReceiveNext());
 			anim.SetBool("rgt",(bool)stream.ReceiveNext());
-
+			anim.SetBool("jump",(bool)stream.ReceiveNext());
+			anim.SetBool("fire",(bool)stream.ReceiveNext());
+			anim.SetBool("roll",(bool)stream.ReceiveNext());
+			anim.SetBool("crouch",(bool)stream.ReceiveNext());
+			anim.SetBool("shield",(bool)stream.ReceiveNext());
+			anim.SetBool("run",(bool)stream.ReceiveNext());
+			anim.SetBool("hitfront",(bool)stream.ReceiveNext());
+			anim.SetBool("hithead",(bool)stream.ReceiveNext());
+			anim.SetBool("hitback",(bool)stream.ReceiveNext());
+			anim.SetBool("die",(bool)stream.ReceiveNext());;
 
 		}
 	}
