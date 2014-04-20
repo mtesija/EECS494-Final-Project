@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerShootScript2 : Photon.MonoBehaviour
 {
-	public float ammo = 20;
+	public float ammo = 999999999999;
 
 	float shootDelayTimer = .15f;
 
