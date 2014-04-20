@@ -59,7 +59,7 @@ public class BulletScript : Photon.MonoBehaviour
 					{
 						return;
 					}
-
+					hitPlayerView.RPC("hit_animation",PhotonTargets.All);
 					hitPlayerView.RPC("modify_health", PhotonTargets.All, bulletDamage);
 					PhotonNetwork.Destroy(this.gameObject);
 				}

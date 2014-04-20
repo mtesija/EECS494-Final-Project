@@ -111,7 +111,6 @@ public class PlayerScript : MonoBehaviour
 			{
 				if(hit.distance >= 4) // Cap its minimum distance to 4, so that your gun wont glitch out of position.
 				{
-
 					Vector3 relativePos = hit.point - CurrentWeapon.WeaponTransform.transform.position;
 					Quaternion rotation = Quaternion.LookRotation(relativePos);
 					//CurrentWeapon.WeaponTransform.transform.rotation = rotation;
@@ -254,8 +253,14 @@ public class PlayerScript : MonoBehaviour
 		{
 			if(Input.GetButton("Run"))
 			{
+				anim.SetBool("run",true);
+				/*
+				Quaternion target = Quaternion.Euler(0, -90f, 0);
+
+				ADSHolder.transform.rotation = target;
 				walkingState = WalkingState.Running;
-				
+				*/
+
 				CharMotor.movement.maxForwardSpeed = runSpeed;
 				CharMotor.movement.maxSidewaysSpeed = runSpeed;
 				CharMotor.movement.maxBackwardsSpeed = runSpeed / 2;
@@ -264,6 +269,7 @@ public class PlayerScript : MonoBehaviour
 			}
 			else 
 			{
+				anim.SetBool("run",false);
 				if(!isAiming)
 				{
 					walkingState = WalkingState.Walking;
@@ -308,8 +314,9 @@ public class PlayerScript : MonoBehaviour
 	
 	public void AnimationController()
 	{
-		/*
+
 		//Switch between multiple character animations when correct parameters have been met. Fade between animations with a 0.2f speed.
+		/*
 		if(reloadWeapon == true)
 		{
 			WalkAnimationHolder.animation.CrossFade("Reload", 0.2f);
@@ -352,7 +359,7 @@ public class PlayerScript : MonoBehaviour
 				WalkAnimationHolder.animation.CrossFade("IdleZoomed", 0.2f);
 			}		
 		}
-			*/
+		*/
 
 		if (Input.GetAxis ("Horizontal") < 0) {
 			anim.SetBool("lft",true);
@@ -410,7 +417,12 @@ public class PlayerScript : MonoBehaviour
 		//}
 
 	}
-	
+
+	[RPC]
+	public void hit_animation(){
+		anim.SetTrigger("hitbody");
+	}
+
 	public void RecoilController()
 	{
 		//Different Recoil values when player is aiming or free-firing.
