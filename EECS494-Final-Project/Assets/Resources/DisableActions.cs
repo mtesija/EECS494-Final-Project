@@ -15,7 +15,7 @@ public class DisableActions : Photon.MonoBehaviour {
 			return;
 		}
 
-		this.collider.enabled = true;
+		this.GetComponent<CapsuleCollider>().enabled = true;
 
 		this.GetComponent<PlayerManager>().enabled = false;
 		this.GetComponent<MouseLook>().enabled = false;

@@ -20,11 +20,13 @@ public class DisablePlayerActions : Photon.MonoBehaviour
 			this.GetComponentInChildren<Camera>().enabled = false;
 			this.GetComponentInChildren<GUILayer>().enabled = false;
 			this.GetComponentInChildren<AudioListener>().enabled = false;
+			this.GetComponentInChildren<ScreenOverlay>().enabled = false;
 
 			this.GetComponentInChildren<ShieldScript>().enabled = false;
 
 			this.GetComponentInChildren<MouseLook>().enabled = false;
 			this.GetComponentInChildren<PlayerShootScript>().enabled = false;
+			this.GetComponentInChildren<ShieldScript>().enabled = false;
 		}
 	}
 }

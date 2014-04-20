@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerShootScript2 : Photon.MonoBehaviour
 {
-	public float ammo = 999999999999;
+	public float ammo = 20;
 
 	float shootDelayTimer = .15f;
 
@@ -52,9 +52,12 @@ public class PlayerShootScript2 : Photon.MonoBehaviour
 		}
 	}
 
-	[RPC]
-	void AddAmmo()
+	void OnGUI()
 	{
-		ammo++;
+		GUILayout.BeginArea(new Rect(Screen.width * 4 / 5, Screen.height * 19 / 20, Screen.width / 5 , Screen.height / 20));
+		
+		GUILayout.Label("Ammo: " + ammo);
+		
+		GUILayout.EndArea();
 	}
 }

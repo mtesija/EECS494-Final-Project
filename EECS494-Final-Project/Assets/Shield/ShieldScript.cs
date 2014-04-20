@@ -2,8 +2,10 @@
 using System.Collections;
 
 public class ShieldScript : Photon.MonoBehaviour {
-	
-	public GameObject shield;
+
+	public PlayerShootScript gun;
+	public PlayerShootScript2 gun2;
+	public ScreenOverlay overlay;
 
 	public PlayerManager playerManager;
 	
@@ -16,7 +18,7 @@ public class ShieldScript : Photon.MonoBehaviour {
 	{
 		if(refreshTimer <= 0)
 		{
-			if(shield.activeSelf == false)
+			if(this.renderer.enabled == false)
 			{
 				energy = Mathf.Clamp(energy + 2, 0, maxEnergy);
 				playerManager.modify_secondary(2);
@@ -34,34 +36,51 @@ public class ShieldScript : Photon.MonoBehaviour {
 			refreshTimer -= Time.deltaTime;
 		}
 		
-		if(Input.GetMouseButtonDown(1) && shield.activeSelf == false && energy >= 5)
+		if(Input.GetMouseButtonDown(1) && this.renderer.enabled == false && energy >= 5)
 		{
 			this.photonView.RPC("Activate", PhotonTargets.All);
+			overlay.enabled = true;
 			refreshTimer = 0;
 		}
 		
-		if(Input.GetMouseButtonUp(1) && shield.activeSelf == true || energy <= 0)
+		if(Input.GetMouseButtonUp(1) && this.renderer.enabled == true || energy <= 0)
 		{
 			this.photonView.RPC("Deactivate", PhotonTargets.All);
+			overlay.enabled = false;
 		}
 	}
 
 	[RPC]
 	void SetShieldColor(float r, float g, float b)
 	{
-		shield.renderer.material.SetColor("Main Color", new Color(r, g, b, .75f));
+		this.renderer.material.SetColor("Main Color", new Color(r, g, b, .75f));
 	}
 	
 	[RPC]
 	void Activate()
 	{
-		shield.SetActive(true);
+		this.renderer.enabled = true;
+		this.collider.enabled = true;
 	}
 	
 	[RPC]
 	void Deactivate()
 	{
-		shield.SetActive(false);
+		this.renderer.enabled = false;
+		this.collider.enabled = false;
+	}
+
+	[RPC]
+	void AddAmmo()
+	{
+		if(gun != null)
+		{
+			gun.ammo += 5;
+		}
+		else if(gun2 != null)
+		{
+			gun2.ammo += 5;
+		}
 	}
 }
 
