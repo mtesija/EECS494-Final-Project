@@ -47,8 +47,14 @@ public class BulletScript : Photon.MonoBehaviour
 			{
 				if(hit.transform.CompareTag("Shield"))
 				{
-					//PhotonView hitShieldView = hit.transform.GetComponent<PhotonView>();
-					//hitShieldView.RPC("AddAmmo", PhotonTargets.All);
+					PhotonView hitShieldView = hit.transform.GetComponent<PhotonView>();
+
+					if(hitShieldView.isMine)
+					{
+						return;
+					}
+
+					hitShieldView.RPC("AddAmmo", PhotonTargets.All);
 					PhotonNetwork.Destroy(this.gameObject);
 				}
 				else if(hit.transform.CompareTag("Player"))
