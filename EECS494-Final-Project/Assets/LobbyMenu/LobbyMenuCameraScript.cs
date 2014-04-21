@@ -91,6 +91,9 @@ public class LobbyMenuCameraScript : MonoBehaviour
 
 		GUI.skin.box.fontStyle = FontStyle.Bold;
 		GUI.skin.box.fontSize = 35;
+		GUI.Box(new Rect((Screen.width - 800) / 2, (Screen.height - 600) / 2, 800, 600), "");
+		GUI.Box(new Rect((Screen.width - 800) / 2, (Screen.height - 600) / 2, 800, 600), "");
+		GUI.Box(new Rect((Screen.width - 800) / 2, (Screen.height - 600) / 2, 800, 600), "");
 		GUI.Box(new Rect((Screen.width - 800) / 2, (Screen.height - 600) / 2, 800, 600), "Lobby: "+ PhotonNetwork.room.name);
 		GUILayout.BeginArea(new Rect((Screen.width - 800) / 2, (Screen.height - 600) / 2, 500, 600));
 		

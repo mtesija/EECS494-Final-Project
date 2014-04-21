@@ -91,6 +91,9 @@ public class MainMenuCameraScript : MonoBehaviour
 		
 		GUI.skin.box.fontStyle = FontStyle.Bold;
 		GUI.skin.box.fontSize = 35;
+		GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 600) / 2, 400, 600),"");
+		GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 600) / 2, 400, 600),"");
+		GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 600) / 2, 400, 600),"");
 		GUI.Box(new Rect((Screen.width - 400) / 2, (Screen.height - 600) / 2, 400, 600), "SHOOT'EM");
 		GUILayout.BeginArea(new Rect((Screen.width - 400) / 2, (Screen.height - 600) / 2, 400, 600));
 		GUI.skin.box.fontSize = 18;
