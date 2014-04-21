@@ -22,9 +22,10 @@ public class LobbyMenuCameraScript : MonoBehaviour
 
 	
 	public static readonly string SceneNameMenu = "_MainMenu";
-
+	
 	private string[] levelNames = new string[] {"Map 1", "Map 2", "TestScene"};
-	private string[] colorNames = new string[] {"Blue", "Green", "Jade", "Orange", "Pink", "Red", "White", "Yellow"};
+	private string[] colorNames = new string[] {"Blue", "Green", "Grey", "Magenta", "Red", "White", "Yellow"};
+	private Color[] colors = new Color[] { Color.blue, Color.green, Color.grey, Color.magenta, Color.red, Color.white, Color.yellow};
 	private string [] modeNames = new string[] {"Deathmatch"};
 	
 	string map;
@@ -41,13 +42,11 @@ public class LobbyMenuCameraScript : MonoBehaviour
 	{
 
 		listStyle.normal.textColor = Color.white; 
-		Texture2D txt = new Texture2D(2,2);
-		for(int i = 0; i < 4; i++) txt.SetPixel(i%2, i/2, Color.black);
-		listStyle.onHover.background = txt;
-		listStyle.hover.background = txt;
-		listStyle.padding.left = 4;
-		listStyle.padding.right = 4;
-		listStyle.padding.top = 4;
+		listStyle.onHover.background =
+		listStyle.hover.background = new Texture2D(2,2);
+		listStyle.padding.left =
+		listStyle.padding.right =
+		listStyle.padding.top =
 		listStyle.padding.bottom = 4;
 
 		GameObject[] goList = new GameObject[levelNames.Length];
@@ -56,7 +55,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 
 		goList = new GameObject[colorNames.Length];
 		for(int i = 0; i < colorNames.Length; i++) goList[i] = new GameObject(colorNames[i]);
-		colorBoxControl = new ObjectComboBox<GameObject>(new Rect(315, 100, 100, 20), goList, listStyle);
+		colorBoxControl = new ObjectComboBox<GameObject>(new Rect(240, 100, 100, 20), goList, listStyle);
 
 		goList = new GameObject[modeNames.Length];
 		for(int i = 0; i < modeNames.Length; i++) goList[i] = new GameObject(modeNames[i]);
@@ -88,7 +87,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		st.normal.textColor = Color.white;
 
 		GUIStyle pst = new GUIStyle(st);
-		pst.normal.textColor = Color.green;
+		pst.normal.textColor = colors[ colorBoxControl.SelectedItemIndex ];
 
 		GUI.skin.box.fontStyle = FontStyle.Bold;
 		GUI.skin.box.fontSize = 35;
@@ -99,26 +98,23 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(15);
 		GUILayout.Label("Player Name:", st, GUILayout.Width(100));
-		GUILayout.Space(200);
+		GUILayout.Space(125);
 		GUILayout.Label("Player Color:", st, GUILayout.Width(100));
 		GUILayout.EndHorizontal();
-		GUILayout.Space(20);
+		GUILayout.Space(15);
 
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(15);
 		GUILayout.Label(PhotonNetwork.player.name, pst, GUILayout.Width(100));
-		GUILayout.Space(200);
+		GUILayout.Space(125);
 		colorBoxControl.Show();
 		GUILayout.Space(15);
 		GUILayout.EndHorizontal();
 
-		GUILayout.Space(10);
+		GUILayout.Space(20);
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(15);
-		GUILayout.Label("PLAYER", st, GUILayout.Width(100));
-		GUILayout.Space(200);
-		GUILayout.Label("COLOR", st, GUILayout.Width(100));
-		GUILayout.Space(15);
+		GUILayout.Label("Other Players:", st, GUILayout.Width(100));
 		GUILayout.EndHorizontal();
 		
 		// PLAYERS AND THEIR COLORS
@@ -130,12 +126,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 
 			GUILayout.BeginHorizontal();
 			GUILayout.Space(15);
-
 			GUILayout.Label(p.name, st, GUILayout.Width(100));
-			GUILayout.Space(200);
-			GUILayout.Label("COLOR", st, GUILayout.Width(100));
-
-			GUILayout.Space(15);
 			GUILayout.EndHorizontal();
 		}
 		GUILayout.EndArea();
@@ -172,8 +163,8 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		GUILayout.Space(25);
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Play To:", GUILayout.Width(60));
-		playTo = Convert.ToInt16(GUILayout.TextField(playTo.ToString(), GUILayout.Width(200)));
-		GUILayout.Space(30);
+		playTo = Convert.ToInt16(GUILayout.TextField(playTo.ToString(), GUILayout.Width(60)));
+		GUILayout.Label(" Kills", GUILayout.Width(150));
 		GUILayout.EndHorizontal();
 
 		GUILayout.Space(20);
@@ -198,15 +189,18 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		GUILayout.Space(20);
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(70);
-		GUILayout.Button("Start Game", GUILayout.Width(160), GUILayout.Height(50));
+		if(GUILayout.Button("Start Game", GUILayout.Width(160), GUILayout.Height(50)))
+		{ print("START GAME"); StartGame(); }
 		GUILayout.EndHorizontal();
 		GUILayout.EndArea();
 
 	}
 	
-	public void StartGame()
+	private void StartGame()
 	{
-		if(PhotonNetwork.playerList.Length <= 1) return;
+		print("START GAME");
+		playerData.playerColor = colors[ colorBoxControl.SelectedItemIndex ];
+		//if(PhotonNetwork.playerList.Length <= 1) return;
 
 		switch(levelBoxControl.SelectedItemIndex)
 		{
