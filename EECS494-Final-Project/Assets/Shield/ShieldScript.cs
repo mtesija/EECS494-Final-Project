@@ -75,11 +75,11 @@ public class ShieldScript : Photon.MonoBehaviour {
 	{
 		if(gun != null)
 		{
-			gun.ammo += 5;
+			gun.ammo += 3;
 		}
 		else if(gun2 != null)
 		{
-			gun2.ammo += 5;
+			gun2.ammo += 3;
 		}
 	}
 }

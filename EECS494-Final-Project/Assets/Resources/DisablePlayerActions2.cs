@@ -18,6 +18,17 @@ public class DisablePlayerActions2 : Photon.MonoBehaviour
 			this.GetComponent<MouseLook>().enabled = false;
 			this.GetComponent<CharacterMotor>().enabled = false;
 			this.GetComponent<FPSInputController>().enabled = false;
+			//this.GetComponent<CapsuleCollider>().enabled = true;
+			this.GetComponent<Animation_network>().enabled = false;
+
+
+			this.GetComponentInChildren<BoxCollider>().enabled = true;
+			CapsuleCollider [] capcol = this.GetComponentsInChildren<CapsuleCollider>();
+			foreach(CapsuleCollider cap in capcol){
+				cap.enabled = true;
+			}
+
+
 			MouseLook [] ml =  this.GetComponentsInChildren<MouseLook>();
 			foreach(MouseLook m in ml){
 				m.enabled = false;
