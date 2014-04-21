@@ -441,12 +441,6 @@ public class PlayerScript : MonoBehaviour
 		//}
 
 	}
-
-	[RPC]
-	public void hit_animation(){
-		anim.SetTrigger("hitbody");
-	}
-
 	public void RecoilController()
 	{
 		//Different Recoil values when player is aiming or free-firing.

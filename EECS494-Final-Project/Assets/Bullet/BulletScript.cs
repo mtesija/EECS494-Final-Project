@@ -57,17 +57,43 @@ public class BulletScript : Photon.MonoBehaviour
 					hitShieldView.RPC("AddAmmo", PhotonTargets.All);
 					PhotonNetwork.Destroy(this.gameObject);
 				}
-				else if(hit.transform.CompareTag("Player"))
-				{
-					PhotonView hitPlayerView = hit.transform.GetComponent<PhotonView>();
 
+				else if(hit.transform.CompareTag("head"))
+				{
+					PhotonView hitPlayerView = hit.transform.parent.GetComponent<PhotonView>();
+					//PhotonView hitPlayerView = hit.transform.GetComponent<PhotonView>();
 					if(hitPlayerView.isMine)
 					{
 						return;
 					}
-
 					hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
-					//hitPlayerView.RPC("hit_animation",PhotonTargets.All);
+					hitPlayerView.RPC("hit_head",PhotonTargets.All);
+					PhotonNetwork.Destroy(this.gameObject);
+				}
+				else if(hit.transform.CompareTag("back"))
+				{
+					PhotonView hitPlayerView = hit.transform.parent.GetComponent<PhotonView>();
+					//PhotonView hitPlayerView = hit.transform.GetComponent<PhotonView>();
+					if(hitPlayerView.isMine)
+					{
+						return;
+					}
+					hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
+					hitPlayerView.RPC("hit_back",PhotonTargets.All);
+					PhotonNetwork.Destroy(this.gameObject);
+				}
+
+
+				else if(hit.transform.CompareTag("Player"))
+				{
+					PhotonView hitPlayerView = hit.transform.parent.GetComponent<PhotonView>();
+					//PhotonView hitPlayerView = hit.transform.GetComponent<PhotonView>();
+					if(hitPlayerView.isMine)
+					{
+						return;
+					}
+					hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
+					hitPlayerView.RPC("hit_front",PhotonTargets.All);
 					PhotonNetwork.Destroy(this.gameObject);
 				}
 
