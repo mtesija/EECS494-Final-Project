@@ -6,15 +6,12 @@ public class LobbyMenuCameraScript : MonoBehaviour
 {
 	private string roomName;
 
-	private Color playerColor = Color.red;
-	float r = 0;
-	float b = 0;
-	float g = 0;
-	
 	private bool collectHitData = false;
 	private bool collectDeathData = true;
 	private bool collectBounceData = false;
-	
+	private int playTo = 10;
+
+
 	private Texture2D menuColorPreview;
 
 	private Vector2 scrollPos = Vector2.zero;
@@ -25,7 +22,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 	
 	public static readonly string SceneNameMenu = "_MainMenu";
 
-	private string[] levelNames = new string[] {"Jack-Map", "Andrew-Map", "TestScene"};
+	private string[] levelNames = new string[] {"Map 1", "Map 2", "TestScene"};
 	private string[] colorNames = new string[] {"Blue", "Green", "Jade", "Orange", "Pink", "Red", "White", "Yellow"};
 	private string [] modeNames = new string[] {"Deathmatch"};
 	
@@ -54,7 +51,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 
 		GameObject[] goList = new GameObject[levelNames.Length];
 		for(int i = 0; i < levelNames.Length; i++) goList[i] = new GameObject(levelNames[i]);
-		levelBoxControl = new ObjectComboBox<GameObject>(new Rect(65, 90, 200, 20), goList, listStyle);
+		levelBoxControl = new ObjectComboBox<GameObject>(new Rect(65, 50, 200, 20), goList, listStyle);
 
 		goList = new GameObject[colorNames.Length];
 		for(int i = 0; i < colorNames.Length; i++) goList[i] = new GameObject(colorNames[i]);
@@ -62,7 +59,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 
 		goList = new GameObject[modeNames.Length];
 		for(int i = 0; i < modeNames.Length; i++) goList[i] = new GameObject(modeNames[i]);
-		modeBoxControl = new ObjectComboBox<GameObject>(new Rect(65, 355, 200, 20), goList, listStyle);
+		modeBoxControl = new ObjectComboBox<GameObject>(new Rect(65, 315, 200, 20), goList, listStyle);
 	}
 	
 
@@ -77,9 +74,6 @@ public class LobbyMenuCameraScript : MonoBehaviour
 			PhotonNetwork.playerName = "Guest" + Random.Range(1, 9999);
 		}
 		roomName = "Game" + Random.Range (1, 9999);
-		r = Random.Range(.2f, 1f);
-		b = Random.Range(.2f, 1f);
-		g = Random.Range(.2f, 1f);
 		menuColorPreview = new Texture2D(150, 90);
 
 	}
@@ -147,9 +141,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 
 		// SECOND COLUMN WITH OPTIONS
 		GUILayout.BeginArea(new Rect(((Screen.width - 800) / 2) + 500, (Screen.height - 600) / 2, 300, 600));
-		GUILayout.Space(70);
-
-		GUILayout.Space(20);
+		GUILayout.Space(50);
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Map:", GUILayout.Width(60));
 		GUILayout.EndHorizontal();
@@ -177,10 +169,28 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		GUILayout.Space(25);
 		GUILayout.BeginHorizontal();
 		GUILayout.Label("Play To:", GUILayout.Width(60));
-		GUILayout.TextField("25", GUILayout.Width(200));
+		playTo = Convert.ToInt16(GUILayout.TextField(playTo.ToString(), GUILayout.Width(200)));
 		GUILayout.Space(30);
 		GUILayout.EndHorizontal();
 
+		GUILayout.Space(20);
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(10);
+		collectDeathData = GUILayout.Toggle(collectDeathData, "Collect Death Data");
+		//playerData.collectDeathData = collectDeathData;
+		GUILayout.EndHorizontal();
+
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(10);
+		collectHitData = GUILayout.Toggle(collectHitData, "Collect Hit Data");
+		//playerData.collectHitData = collectHitData;
+		GUILayout.EndHorizontal();
+
+		GUILayout.BeginHorizontal();
+		GUILayout.Space(10);
+		collectBounceData = GUILayout.Toggle(collectBounceData, "Collect Bounce Data");
+		//playerData.collectBounceData = collectBounceData;
+		GUILayout.EndHorizontal();
 
 		GUILayout.Space(20);
 		GUILayout.BeginHorizontal();
@@ -328,9 +338,20 @@ public class LobbyMenuCameraScript : MonoBehaviour
 //		GUILayout.EndArea();
 	}
 	
-	public void OnCreatedRoom()
+	public void StartGame()
 	{
-		PhotonNetwork.LoadLevel( levelNames[ levelBoxControl.SelectedItemIndex ]);
+		switch(levelBoxControl.SelectedItemIndex)
+		{
+		case 0:
+			PhotonNetwork.LoadLevel( "Jack-Map" );
+			break;
+		case 1:
+			PhotonNetwork.LoadLevel( "Andrew-Map" );
+			break;
+		case 2:
+			PhotonNetwork.LoadLevel( "TestScene" );
+			break;
+		}
 	}
 
 	public void OnFailedToConnectToPhoton(object parameters)
