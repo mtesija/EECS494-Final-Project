@@ -6,7 +6,6 @@ public class PlayerScript : MonoBehaviour
 {
 
 	public PauseScript pauseScript;
-	float bulletSpeed = 10;
 	//public GameObject bullet;
 	public CharacterController CharCont;
 	public CharacterMotor CharMotor;
@@ -35,10 +34,10 @@ public class PlayerScript : MonoBehaviour
 	//Shooting with your Weapon.
 	public List<WeaponInfo> WeaponList = new List<WeaponInfo>();
 	public WeaponInfo CurrentWeapon;
-	public int bulletCounter = 30;			//Number of bullets.
+	public int bulletCounter = 20;			//Number of bullets.
 	public int magazineCounter = 99;		//Number of magazines.
 	public float shootTimer = 0f;
-	public float refireTimer = 1f;
+	private float refireTimer = .35f;
 	private float reloadTimer = 1.75f;
 	private float reloadDone = 0;
 	private bool reloadWeapon = false;
@@ -487,6 +486,17 @@ public class PlayerScript : MonoBehaviour
 			FPSCharacter.GetComponent<MouseLook>().sensitivityX = 5f;	//Base SensitivityX / 2 = 5 sensitivity;
 		}
 	}
+
+	
+	void OnGUI()
+	{
+		GUILayout.BeginArea(new Rect(Screen.width * 4 / 5, Screen.height * 19 / 20, Screen.width / 5 , Screen.height / 20));
+		
+		GUILayout.Label("Ammo: " + bulletCounter);
+		
+		GUILayout.EndArea();
+	}
+
 }
 
 [System.Serializable] 	//Add this to show the WeaponInfo vars in the inspector, in its own editor bracket.

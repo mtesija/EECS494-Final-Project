@@ -3,10 +3,6 @@ using System.Collections;
 
 public class SpawnPlayer : Photon.MonoBehaviour
 {
-	void Awake()
-	{
-		spawn();
-	}
 
 	public void spawn()
 	{

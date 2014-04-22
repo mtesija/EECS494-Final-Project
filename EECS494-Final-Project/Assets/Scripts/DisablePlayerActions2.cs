@@ -21,6 +21,7 @@ public class DisablePlayerActions2 : Photon.MonoBehaviour
 			//this.GetComponent<CapsuleCollider>().enabled = true;
 			this.GetComponent<Animation_network>().enabled = false;
 
+			this.GetComponentInChildren<ThirdPersonCameraController>().enabled = false;
 
 			this.GetComponentInChildren<BoxCollider>().enabled = true;
 			CapsuleCollider [] capcol = this.GetComponentsInChildren<CapsuleCollider>();

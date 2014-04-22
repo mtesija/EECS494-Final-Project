@@ -24,6 +24,8 @@ public class DisableActions : Photon.MonoBehaviour {
 		this.GetComponent<CharacterMotor>().enabled = false;
 		this.GetComponent<FPSInputController>().enabled = false;
 
+		this.GetComponentInChildren<ThirdPersonCameraController>().enabled = false;
+
 		pivot.GetComponent<MouseLook>().enabled = false;
 
 		camera.SetActive(false);
