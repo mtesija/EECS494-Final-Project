@@ -288,15 +288,6 @@ public class PlayerScript : MonoBehaviour
 					CharMotor.movement.maxBackwardsSpeed = walkSpeed / 10;
 				}
 			}
-			if(Input.GetButton("Fire2")){
-				Debug.Log("speed0");
-				CharMotor.movement.velocity.x = 0;
-				CharMotor.movement.velocity.y = 0;
-				CharMotor.movement.velocity.z = 0;
-				CharMotor.movement.maxForwardSpeed = 0;
-				CharMotor.movement.maxSidewaysSpeed = 0;
-				CharMotor.movement.maxBackwardsSpeed = 0;
-			}
 		}
 		else 
 		{
@@ -413,7 +404,7 @@ public class PlayerScript : MonoBehaviour
 			anim.SetTrigger("roll");
 			anim.applyRootMotion = false;
 		}
-
+		
 		if (Input.GetKeyDown (KeyCode.LeftControl)) {
 			anim.SetBool ("crouch", true);
 		} 
@@ -422,17 +413,19 @@ public class PlayerScript : MonoBehaviour
 			anim.SetBool ("crouch", false);	
 		}
 
+		/*
 		if(Input.GetButton("Fire2")) {
 			anim.SetBool ("shield", true);
-			/*
+
 			ADSHolder.transform.position = new Vector3(-0.0835f,0.313f,-0.00117f);
 			leftarmref.transform.position = new Vector3(-0.7445076f,-0.0347f,-0.3105f);
 			rightarmref.transform.position = new Vector3(0.75358f,0.3511465f,0.10297f);
-			*/
+
 		}
 		else {
 			anim.SetBool ("shield", false);
 		}
+		*/
 
 		if(Input.GetKeyDown(KeyCode.T)){
 		    anim.applyRootMotion = true;

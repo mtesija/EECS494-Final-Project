@@ -59,7 +59,7 @@ public class MainMenuCameraScript : MonoBehaviour
 		b = Random.Range(.2f, 1f);
 		g = Random.Range(.2f, 1f);
 		menuColorPreview = new Texture2D(150, 90);
-		PhotonHashtable someCustomPropertiesToSet = new PhotonHashtable() {{"kill", 3},{"death", 5}};
+		PhotonHashtable someCustomPropertiesToSet = new PhotonHashtable() {{"kill", 0},{"death", 0}};
 		PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
 	}
 	
