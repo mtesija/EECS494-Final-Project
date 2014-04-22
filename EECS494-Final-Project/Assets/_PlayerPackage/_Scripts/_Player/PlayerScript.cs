@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class PlayerScript : MonoBehaviour 
 {
-
 	public PauseScript pauseScript;
 	//public GameObject bullet;
 	public CharacterController CharCont;
@@ -488,6 +487,7 @@ public class PlayerScript : MonoBehaviour
 		GUILayout.Label("Ammo: " + bulletCounter);
 		
 		GUILayout.EndArea();
+		
 	}
 
 }

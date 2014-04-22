@@ -2,6 +2,7 @@
 using System;
 using Random = UnityEngine.Random;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
+using System.Collections.Generic;
 
 public class MainMenuCameraScript : MonoBehaviour
 {
