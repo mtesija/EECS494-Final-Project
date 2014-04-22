@@ -5,6 +5,7 @@ public class ShieldScript2m : Photon.MonoBehaviour {
 
 	public PlayerShootScript gun;
 	public PlayerShootScript2 gun2;
+	public PlayerScript gun3;
 
 	public PlayerManager playerManager;
 	
@@ -77,6 +78,10 @@ public class ShieldScript2m : Photon.MonoBehaviour {
 		else if(gun2 != null)
 		{
 			gun2.ammo += 3;
+		}
+		else if(gun3 != null)
+		{
+			gun3.bulletCounter += 3;
 		}
 	}
 }
