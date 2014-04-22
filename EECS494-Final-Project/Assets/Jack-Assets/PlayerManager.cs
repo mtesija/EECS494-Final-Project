@@ -223,7 +223,7 @@ public class PlayerManager : Photon.MonoBehaviour {
 	private HorizontalOptions healthbar_horizontal_location;
 	private VerticalOptions healthbar_vertical_location;
 	private Vector2 unit_portrait_position, unit_portrait_size;
-	private SpawnPlayer spawnScript;
+	private SpawnRandomizer spawnScript;
 	private PlayerDataScript playerData;
 	#endregion
 	// ===================================================================================================
@@ -349,7 +349,7 @@ public class PlayerManager : Photon.MonoBehaviour {
 
 		}
 		
-		spawnScript = GameObject.Find("Spawner").GetComponent<SpawnPlayer>();
+		spawnScript = GameObject.Find("ChooseSpawn").GetComponent<SpawnRandomizer>();
 		playerData = GameObject.Find("PlayerData").GetComponent<PlayerDataScript>();
 	}
 	#endregion
@@ -381,7 +381,7 @@ public class PlayerManager : Photon.MonoBehaviour {
 			{
 				GA.API.Design.NewEvent("Death", this.transform.position);
 			}
-			spawnScript.spawn();
+			spawnScript.Spawn();
 			PhotonNetwork.Destroy(this.gameObject);
 		}
 
