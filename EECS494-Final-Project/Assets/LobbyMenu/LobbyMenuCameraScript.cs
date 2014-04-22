@@ -67,7 +67,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 	{
 		// this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
 		PhotonNetwork.automaticallySyncScene = true;
-		
+
 		// generate a name for this player, if none is assigned yet
 		roomName = "Game" + Random.Range (1, 9999);
 		menuColorPreview = new Texture2D(150, 90);
@@ -76,7 +76,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 
 	public void Update()
 	{
-
+		print (PhotonNetwork.room.playerCount);
 	}
 	
 	public void OnGUI()
@@ -197,6 +197,12 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		GUILayout.EndHorizontal();
 		GUILayout.EndArea();
 
+
+		if(GUI.Button(new Rect((Screen.width - 800) / 2 + 10, (Screen.height - 600) / 2 + 10, 70, 20), "Quit")){
+			PhotonNetwork.LeaveLobby();
+			PhotonNetwork.LeaveRoom();
+			PhotonNetwork.LoadLevel( "_MainMenu" );
+		}
 	}
 	
 	private void StartGame()

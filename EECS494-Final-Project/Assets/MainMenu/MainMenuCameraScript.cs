@@ -135,7 +135,9 @@ public class MainMenuCameraScript : MonoBehaviour
 		GUILayout.Label("Room Name:", GUILayout.Width(80));
 		this.roomName = GUILayout.TextField(this.roomName);
 		if (GUILayout.Button("Create Room", GUILayout.Width(100)))
-		{ PhotonNetwork.CreateRoom(this.roomName, new RoomOptions() { maxPlayers = 6 }, null); }
+		{ 
+			PhotonNetwork.CreateRoom(this.roomName, new RoomOptions() { maxPlayers = 6 }, null);
+		}
 		GUILayout.Space(15);
 		GUILayout.EndHorizontal();
 
