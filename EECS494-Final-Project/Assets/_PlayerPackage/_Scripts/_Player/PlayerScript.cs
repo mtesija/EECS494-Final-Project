@@ -7,7 +7,7 @@ public class PlayerScript : MonoBehaviour
 
 	public PauseScript pauseScript;
 	float bulletSpeed = 10;
-	public GameObject bullet;
+	//public GameObject bullet;
 	public CharacterController CharCont;
 	public CharacterMotor CharMotor;
 	public Transform WeaponHolder;
@@ -61,7 +61,7 @@ public class PlayerScript : MonoBehaviour
 	private PlayerDataScript playerData;
 
 	private LaserScript laserScript;
-	private GameObject barrel;
+	public GameObject barrel;
 	public Animator anim;
 	void Start()
 	{	
@@ -72,7 +72,7 @@ public class PlayerScript : MonoBehaviour
 		CurrentWeapon = WeaponList[0];
 		//laserScript = gameObject.GetComponentInChildren<LaserScript> ();
 		laserScript = gameObject.transform.root.GetComponentInChildren<LaserScript> ();
-		barrel = GameObject.Find("Barrel");
+		//barrel = GameObject.Find("Barrel");
 		anim = gameObject.transform.root.GetComponentInChildren<Animator> ();
 	}
 	
@@ -307,6 +307,7 @@ public class PlayerScript : MonoBehaviour
 		//Aim Down Sight controller. When right mouse clicked, lerp the gun towards the player his face.
 		if(Input.GetKey(KeyCode.E) && walkingState == WalkingState.Walking || Input.GetKey(KeyCode.E) && walkingState == WalkingState.Idle)
 		{
+
 			isAiming = true;
 			//ADSHolder.localPosition = Vector3.Lerp(ADSHolder.localPosition, CurrentWeapon.Scopes[CurrentWeapon.CurrentScope].adsPosition, 0.25f);
 			Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, new Vector3(0,0,1),0.25f);

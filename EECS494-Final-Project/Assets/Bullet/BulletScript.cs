@@ -70,6 +70,7 @@ public class BulletScript : Photon.MonoBehaviour
 					hitPlayerView.RPC("hit_head",PhotonTargets.All);
 					PhotonNetwork.Destroy(this.gameObject);
 				}
+
 				else if(hit.transform.CompareTag("back"))
 				{
 					PhotonView hitPlayerView = hit.transform.parent.GetComponent<PhotonView>();
@@ -96,6 +97,7 @@ public class BulletScript : Photon.MonoBehaviour
 					hitPlayerView.RPC("hit_front",PhotonTargets.All);
 					PhotonNetwork.Destroy(this.gameObject);
 				}
+
 
 				GameObject hitEffect = PhotonNetwork.Instantiate("BulletHitEffect", this.transform.position - hit.normal * .1f, Quaternion.LookRotation(hit.normal), 0);
 				PhotonView hitView = hitEffect.GetComponent<PhotonView>();

@@ -36,4 +36,13 @@ public class Animation_network : Photon.MonoBehaviour {
 		anim.SetTrigger("hithead");
 	}
 
+	[RPC]
+	void is_dead(){
+		if(!photonView.isMine){
+			anim.SetTrigger("die");
+		}
+		anim.SetTrigger("die");
+	}
+
+
 }
