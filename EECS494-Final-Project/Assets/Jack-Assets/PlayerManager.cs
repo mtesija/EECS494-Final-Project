@@ -219,12 +219,14 @@ public class PlayerManager : Photon.MonoBehaviour {
 	//
 	#region PRIVATE_VARIABLES
 	private Texture life_bg, life_g, life_y, life_r, life_dr, secondary_b;
-	private float health_bar_width, health_bar_height, cur_health, cur_health2, cur_secondary, cur_secondary2, margin_horizontal, margin_vertical;
+	private float health_bar_width, health_bar_height, cur_health2, cur_secondary, cur_secondary2, margin_horizontal, margin_vertical;
+	public float cur_health;
 	private HorizontalOptions healthbar_horizontal_location;
 	private VerticalOptions healthbar_vertical_location;
 	private Vector2 unit_portrait_position, unit_portrait_size;
 	private SpawnPlayer spawnScript;
 	private PlayerDataScript playerData;
+	private float timedelay;
 	#endregion
 	// ===================================================================================================
 	// ===================================================================================================
@@ -301,7 +303,7 @@ public class PlayerManager : Photon.MonoBehaviour {
 	//
 	#region START
 	private void Start () {
-		
+		timedelay = 4;
 		if( bar_layout_position == Position.TOP_LEFT ){ healthbar_horizontal_location = HorizontalOptions.LEFT; healthbar_vertical_location = VerticalOptions.TOP; }
 		else if( bar_layout_position == Position.TOP_CENTER ){ healthbar_horizontal_location = HorizontalOptions.CENTER; healthbar_vertical_location = VerticalOptions.TOP; }
 		else if( bar_layout_position == Position.TOP_RIGHT ){ healthbar_horizontal_location = HorizontalOptions.RIGHT; healthbar_vertical_location = VerticalOptions.TOP; }
@@ -381,8 +383,12 @@ public class PlayerManager : Photon.MonoBehaviour {
 			{
 				GA.API.Design.NewEvent("Death", this.transform.position);
 			}
-			spawnScript.spawn();
-			PhotonNetwork.Destroy(this.gameObject);
+			timedelay -=1*Time.deltaTime;
+			if(timedelay < 0){
+				timedelay = 4;
+				spawnScript.spawn();
+				PhotonNetwork.Destroy(this.gameObject);
+			}
 		}
 
 

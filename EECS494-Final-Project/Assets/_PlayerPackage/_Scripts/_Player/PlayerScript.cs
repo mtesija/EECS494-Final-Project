@@ -290,6 +290,10 @@ public class PlayerScript : MonoBehaviour
 				}
 			}
 			if(Input.GetButton("Fire2")){
+				Debug.Log("speed0");
+				CharMotor.movement.velocity.x = 0;
+				CharMotor.movement.velocity.y = 0;
+				CharMotor.movement.velocity.z = 0;
 				CharMotor.movement.maxForwardSpeed = 0;
 				CharMotor.movement.maxSidewaysSpeed = 0;
 				CharMotor.movement.maxBackwardsSpeed = 0;

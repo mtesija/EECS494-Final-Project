@@ -33,7 +33,7 @@ public class PhotonStatsGui : MonoBehaviour
     public bool buttonsOn;
 
     /// <summary>Positioning rect for window.</summary>
-    public Rect statsRect = new Rect(0, 100, 200, 50);
+    public Rect statsRect = new Rect(0, 100, 200, 200);
 
     /// <summary>Unity GUI Window ID (must be unique or will cause issues).</summary>
     public int WindowId = 100;
@@ -88,7 +88,14 @@ public class PhotonStatsGui : MonoBehaviour
         string total = string.Format("Out|In|Sum:\t{0,4} | {1,4} | {2,4}", gls.TotalOutgoingMessageCount, gls.TotalIncomingMessageCount, gls.TotalMessageCount);
         string elapsedTime = string.Format("{0}sec average:", elapsedMs);
         string average = string.Format("Out|In|Sum:\t{0,4} | {1,4} | {2,4}", gls.TotalOutgoingMessageCount / elapsedMs, gls.TotalIncomingMessageCount / elapsedMs, gls.TotalMessageCount / elapsedMs);
-        GUILayout.Label(total);
+		int value = (int)PhotonNetwork.player.customProperties["kill"];
+
+		total = value.ToString ();
+		average = ((int)PhotonNetwork.player.customProperties["death"]).ToString();
+		elapsedTime = PhotonNetwork.player.name;
+		Debug.Log (value.ToString ());
+
+		GUILayout.Label(total);
         GUILayout.Label(elapsedTime);
         GUILayout.Label(average);
 
@@ -140,9 +147,9 @@ public class PhotonStatsGui : MonoBehaviour
         // if anything was clicked, the height of this window is likely changed. reduce it to be layouted again next frame
         if (GUI.changed)
         {
-            this.statsRect.height = 100;
+			Debug.Log("gui changed");
+			this.statsRect.height = 100;
         }
-
         GUI.DragWindow();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
+using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 public class MainMenuCameraScript : MonoBehaviour
 {
@@ -50,6 +51,8 @@ public class MainMenuCameraScript : MonoBehaviour
 		if (String.IsNullOrEmpty(PhotonNetwork.playerName))
 		{
 			PhotonNetwork.playerName = "Guest" + Random.Range(1, 9999);
+			//ExitGames.Client.Photon.Hashtable.
+			//PhotonNetwork.SetPlayerCustomProperties(hashtable);
 		}
 		roomName = "Game" + Random.Range (1, 9999);
 		levelSelect = Mathf.Abs(Random.Range(-1, 1));
@@ -57,6 +60,8 @@ public class MainMenuCameraScript : MonoBehaviour
 		b = Random.Range(.2f, 1f);
 		g = Random.Range(.2f, 1f);
 		menuColorPreview = new Texture2D(150, 90);
+		PhotonHashtable someCustomPropertiesToSet = new PhotonHashtable() {{"kill", 3},{"death", 5}};
+		PhotonNetwork.player.SetCustomProperties(someCustomPropertiesToSet);
 	}
 	
 	public void OnGUI()
