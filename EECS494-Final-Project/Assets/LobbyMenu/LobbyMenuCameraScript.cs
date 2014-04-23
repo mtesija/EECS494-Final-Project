@@ -60,6 +60,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		goList = new GameObject[modeNames.Length];
 		for(int i = 0; i < modeNames.Length; i++) goList[i] = new GameObject(modeNames[i]);
 		modeBoxControl = new ObjectComboBox<GameObject>(new Rect(65, 335, 200, 20), goList, listStyle);
+
 	}
 	
 
@@ -72,6 +73,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		roomName = "Game" + Random.Range (1, 9999);
 		menuColorPreview = new Texture2D(150, 90);
 
+		playerData = GameObject.Find("PlayerData").GetComponent<PlayerDataScript>();
 	}
 
 	public void Update()
@@ -174,19 +176,19 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(10);
 		collectDeathData = GUILayout.Toggle(collectDeathData, "Collect Death Data");
-		//playerData.collectDeathData = collectDeathData;
+		playerData.collectDeathData = collectDeathData;
 		GUILayout.EndHorizontal();
 
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(10);
 		collectHitData = GUILayout.Toggle(collectHitData, "Collect Hit Data");
-		//playerData.collectHitData = collectHitData;
+		playerData.collectHitData = collectHitData;
 		GUILayout.EndHorizontal();
 
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(10);
 		collectBounceData = GUILayout.Toggle(collectBounceData, "Collect Bounce Data");
-		//playerData.collectBounceData = collectBounceData;
+		playerData.collectBounceData = collectBounceData;
 		GUILayout.EndHorizontal();
 
 		GUILayout.Space(20);
@@ -209,6 +211,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 	{
 		print("START GAME");
 		playerData.playerColor = colors[ colorBoxControl.SelectedItemIndex ];
+		playerData.playTo = playTo;
 		//if(PhotonNetwork.playerList.Length <= 1) return;
 
 		switch(levelBoxControl.SelectedItemIndex)

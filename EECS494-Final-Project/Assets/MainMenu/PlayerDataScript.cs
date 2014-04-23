@@ -8,6 +8,7 @@ public class PlayerDataScript : MonoBehaviour {
 	public bool collectHitData = false;
 	public bool collectDeathData = true;
 	public bool collectBounceData = false;
+	public int playTo = 10;
 
 	void Awake()
 	{

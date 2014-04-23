@@ -31,8 +31,6 @@ public class MainMenuCameraScript : MonoBehaviour
 	public static readonly string SceneNameGame = "Jack-Map";
 	public static readonly string SceneNameGame2 = "Andrew-Map";
 	public static readonly string SceneNameGame3 = "TestScene";
-
-	public PlayerDataScript playerData;
 	
 	public void Awake()
 	{
@@ -202,8 +200,6 @@ public class MainMenuCameraScript : MonoBehaviour
 	
 	public void OnCreatedRoom()
 	{
-		playerData.name = PhotonNetwork.playerName;
-
 		if(!(string.IsNullOrEmpty(PhotonNetwork.playerName) || string.IsNullOrEmpty(roomName)))
 			PhotonNetwork.LoadLevel("LobbyMenu");
 	}
