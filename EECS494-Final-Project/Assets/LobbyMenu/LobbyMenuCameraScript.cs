@@ -77,11 +77,6 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		playerData = GameObject.Find("PlayerData").GetComponent<PlayerDataScript>();
 	}
 
-	public void Update()
-	{
-		print (PhotonNetwork.room.playerCount);
-	}
-	
 	public void OnGUI()
 	{
 		GUIStyle st = new GUIStyle();
@@ -126,14 +121,15 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		// PLAYERS AND THEIR COLORS
 		foreach(PhotonPlayer p in PhotonNetwork.playerList)
 		{
-			GUILayout.Space(10);
 
-			if(p.name == PhotonNetwork.player.name) break;
-
-			GUILayout.BeginHorizontal();
-			GUILayout.Space(15);
-			GUILayout.Label(p.name, st, GUILayout.Width(100));
-			GUILayout.EndHorizontal();
+			if(p.name != PhotonNetwork.player.name)
+			{
+				GUILayout.Space(10);
+				GUILayout.BeginHorizontal();
+				GUILayout.Space(15);
+				GUILayout.Label(p.name, st, GUILayout.Width(100));
+				GUILayout.EndHorizontal();
+			}
 		}
 		GUILayout.EndArea();
 
@@ -196,7 +192,7 @@ public class LobbyMenuCameraScript : MonoBehaviour
 		GUILayout.BeginHorizontal();
 		GUILayout.Space(70);
 		if(GUILayout.Button("Start Game", GUILayout.Width(160), GUILayout.Height(50)))
-		{ print("START GAME"); StartGame(); }
+		{ StartGame(); }
 		GUILayout.EndHorizontal();
 		GUILayout.EndArea();
 
@@ -210,10 +206,9 @@ public class LobbyMenuCameraScript : MonoBehaviour
 	
 	private void StartGame()
 	{
-		print("START GAME");
 		playerData.playerColor = colors[ colorBoxControl.SelectedItemIndex ];
 		playerData.playTo = playTo;
-		//if(PhotonNetwork.playerList.Length <= 1) return;
+		if(PhotonNetwork.playerList.Length <= 1) return;
 
 		switch(levelBoxControl.SelectedItemIndex)
 		{
