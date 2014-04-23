@@ -68,7 +68,6 @@ public class LobbyMenuCameraScript : MonoBehaviour
 	{
 		// this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
 		PhotonNetwork.automaticallySyncScene = true;
-		PhotonNetwork.autoJoinLobby = true;
 
 		// generate a name for this player, if none is assigned yet
 		roomName = "Game" + Random.Range (1, 9999);
