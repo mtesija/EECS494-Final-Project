@@ -208,7 +208,7 @@ public class PlayerScript : MonoBehaviour
 							CurrentRecoil3 += new Vector3(Random.Range(-CurrentWeapon.RecoilKickBackADS.x, CurrentWeapon.RecoilKickBackADS.x), Random.Range(-CurrentWeapon.RecoilKickBackADS.y, CurrentWeapon.RecoilKickBackADS.y), CurrentWeapon.RecoilKickBackADS.z);
 						}
 						*/
-						audio.PlayOneShot(gunFire);
+						//audio.PlayOneShot(gunFire);
 						bulletCounter -= 1;
 						shootTimer = 0;
 						//Set the shoottimer back to 0, waiting for it to reach its cap again, so that the player can shoot once more.

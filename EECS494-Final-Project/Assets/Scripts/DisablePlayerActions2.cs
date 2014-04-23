@@ -3,6 +3,13 @@ using System.Collections;
 
 public class DisablePlayerActions2 : Photon.MonoBehaviour
 {
+	public PlayerManager playermanager;
+
+
+	void Start(){
+		playermanager = this.GetComponent<PlayerManager> ();
+	}
+
 	void Update()
 	{
 		
@@ -22,11 +29,20 @@ public class DisablePlayerActions2 : Photon.MonoBehaviour
 			this.GetComponent<Animation_network>().enabled = false;
 
 			//this.GetComponentInChildren<ThirdPersonCameraController>().enabled = false;
-
+			if(playermanager.cur_health>0){
 			this.GetComponentInChildren<BoxCollider>().enabled = true;
 			CapsuleCollider [] capcol = this.GetComponentsInChildren<CapsuleCollider>();
 			foreach(CapsuleCollider cap in capcol){
 				cap.enabled = true;
+			}
+			}
+			else{
+				this.GetComponentInChildren<BoxCollider>().enabled = false;
+				CapsuleCollider [] capcol = this.GetComponentsInChildren<CapsuleCollider>();
+				foreach(CapsuleCollider cap in capcol){
+					cap.enabled = false;
+				}
+
 			}
 
 
