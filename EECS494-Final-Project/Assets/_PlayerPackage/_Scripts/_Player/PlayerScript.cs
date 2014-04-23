@@ -86,7 +86,7 @@ public class PlayerScript : MonoBehaviour
 				AdjustTimer = 0f;
 			}
 			
-			ADSController();
+			//ADSController();
 			//RecoilController();
 			velocityMagnitude = CharCont.velocity.magnitude;
 		}

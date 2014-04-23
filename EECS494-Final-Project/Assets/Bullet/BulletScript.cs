@@ -53,21 +53,35 @@ public class BulletScript : Photon.MonoBehaviour
 			RaycastHit hit;
 			if(Physics.Raycast(this.transform.position, this.rigidbody.velocity, out hit, hitLength))
 			{
-				if(hit.transform.CompareTag("Shield")||hit.transform.CompareTag("head")||
-				   hit.transform.CompareTag("back")||hit.transform.CompareTag("Player")){
+				if(hit.transform.CompareTag("Shield"))
+				{
+					PhotonView hitShieldView = hit.transform.GetComponent<PhotonView>();
+					
+					if(hitShieldView.isMine)
+					{
+						return;
+					}
+					
+					hitShieldView.RPC("AddAmmo", PhotonTargets.All);
+					PhotonNetwork.Destroy(this.gameObject);
+				}
+				else if(hit.transform.CompareTag("head")||hit.transform.CompareTag("back")||hit.transform.CompareTag("Player")){
+					if(hit.transform.name != "BodyColloder" || hit.transform.name != "BackbodyColider" || hit.transform.name != "HeadCollider")
+					{
+						return;
+					}
+
 					PhotonView hitPlayerView = hit.transform.parent.GetComponent<PhotonView>();
 					PlayerManager playermanager = hit.transform.parent.GetComponent<PlayerManager>();
 					if(hitPlayerView.isMine)
 					{
 						return;
 					}
-					if(hit.transform.CompareTag("Shield")){
 
-					}
-					else if(hit.transform.CompareTag("head"))
+					if(hit.transform.CompareTag("head"))
 					{
 						Debug.Log("hit in head");
-						hitPlayerView.RPC("modify_health", PhotonTargets.All, -2*bulletDamage);
+						hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
 						if(playermanager.cur_health<=0){
 							hitPlayerView.RPC("is_dead",PhotonTargets.All);
 							updatekillanddeath(hit);

@@ -5,7 +5,19 @@ public class MainMenu : MonoBehaviour
 {
 	private bool mainMenuScreen = true;
 	private bool controlsScreen = false;
-	
+
+	public GameObject playerdata;
+
+	void Awake()
+	{
+		if(GameObject.Find("PlayerData") == null)
+		{
+			GameObject data = Instantiate(playerdata) as GameObject;
+			data.name = "PlayerData";
+		}
+	}
+
+
 	void OnGUI()
 	{
 		//Main menu screen.

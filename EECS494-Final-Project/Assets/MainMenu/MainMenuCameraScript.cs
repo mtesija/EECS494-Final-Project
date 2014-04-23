@@ -35,8 +35,16 @@ public class MainMenuCameraScript : MonoBehaviour
 	public static readonly string SceneNameGame2 = "Andrew-Map";
 	public static readonly string SceneNameGame3 = "TestScene";
 
+	public GameObject playerdata;
+
 	public void Awake()
 	{
+		if(GameObject.Find("PlayerData") == null)
+		{
+			GameObject data = Instantiate(playerdata) as GameObject;
+			data.name = "PlayerData";
+		}
+
 		// this makes sure we can use PhotonNetwork.LoadLevel() on the master client and all clients in the same room sync their level automatically
 		PhotonNetwork.automaticallySyncScene = true;
 		
