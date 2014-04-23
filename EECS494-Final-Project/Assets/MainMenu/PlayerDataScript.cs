@@ -8,6 +8,8 @@ public class PlayerDataScript : MonoBehaviour {
 	public bool collectHitData = false;
 	public bool collectDeathData = true;
 	public bool collectBounceData = false;
+	public bool host = false;
+
 	void Awake()
 	{
 		DontDestroyOnLoad(this.gameObject);
