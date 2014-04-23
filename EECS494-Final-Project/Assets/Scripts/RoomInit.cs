@@ -18,7 +18,6 @@ public class RoomInit : MonoBehaviour {
 	void Update () {
 		
 		if(PhotonNetwork.room == null){
-			Debug.Log("nani");
 		}
 		else{
 			if(initialized == false){

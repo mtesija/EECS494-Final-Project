@@ -17,14 +17,14 @@ public class DisableActions : Photon.MonoBehaviour {
 
 		this.GetComponent<CapsuleCollider>().enabled = true;
 
+		this.GetComponent<PauseScript>().enabled = false;
+		this.GetComponent<IngameGUI>().enabled = false;
 		this.GetComponent<PlayerManager>().enabled = false;
 		this.GetComponent<MouseLook>().enabled = false;
 		this.GetComponent<PlayerColorScript>().enabled = false;
 		this.GetComponent<CharacterController>().enabled = false;
 		this.GetComponent<CharacterMotor>().enabled = false;
 		this.GetComponent<FPSInputController>().enabled = false;
-
-		this.GetComponentInChildren<ThirdPersonCameraController>().enabled = false;
 
 		pivot.GetComponent<MouseLook>().enabled = false;
 

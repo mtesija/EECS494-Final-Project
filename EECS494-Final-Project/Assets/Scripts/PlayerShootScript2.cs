@@ -21,8 +21,6 @@ public class PlayerShootScript2 : Photon.MonoBehaviour
 
 	void Update()
 	{
-		Screen.lockCursor = true;
-
 		Ray ray = mainCamera.camera.ViewportPointToRay(new Vector3(0.5f,0.5f,0));
 		RaycastHit hit;
 

@@ -47,17 +47,6 @@ public class BulletScript : Photon.MonoBehaviour
 		}
 	}
 
-	void Start()
-	{
-		main = gameObject.GetComponent( typeof(AudioSource) ) as AudioSource;
-		main.clip = Resources.Load("Sounds/buzz") as AudioClip;
-		main.loop = true;
-		main.enabled = true;
-		main.Play();
-
-
-	}
-
 	void FixedUpdate()
 	{
 		if(this.isOwner)
@@ -65,50 +54,6 @@ public class BulletScript : Photon.MonoBehaviour
 			RaycastHit hit;
 			if(Physics.Raycast(this.transform.position, this.rigidbody.velocity, out hit, hitLength))
 			{
-				if(hit.transform.CompareTag("Shield")||hit.transform.CompareTag("head")||
-				   hit.transform.CompareTag("back")||hit.transform.CompareTag("Player")){
-					PhotonView hitPlayerView = hit.transform.parent.GetComponent<PhotonView>();
-					PlayerManager playermanager = hit.transform.parent.GetComponent<PlayerManager>();
-					if(hitPlayerView.isMine)
-					{
-						return;
-					}
-					if(hit.transform.CompareTag("Shield")){
-
-					}
-					else if(hit.transform.CompareTag("head"))
-					{
-						Debug.Log("hit in head");
-						hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
-						if(playermanager.cur_health<=0){
-							hitPlayerView.RPC("is_dead",PhotonTargets.All);
-							updatekillanddeath(hit);
-						}
-						else
-							hitPlayerView.RPC("hit_head",PhotonTargets.All);
-					}
-					else if(hit.transform.CompareTag("back")){
-						Debug.Log("hit in back");
-						hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
-						if(playermanager.cur_health<=0){
-							hitPlayerView.RPC("is_dead",PhotonTargets.All);
-							updatekillanddeath(hit);
-						}
-						else
-							hitPlayerView.RPC("hit_back",PhotonTargets.All);
-					}
-					else if(hit.transform.CompareTag("Player")){
-						hitPlayerView.RPC("modify_health", PhotonTargets.All, -1f);
-						if(playermanager.cur_health<=0){
-							hitPlayerView.RPC("is_dead",PhotonTargets.All);
-							updatekillanddeath(hit);
-						}
-						else
-						hitPlayerView.RPC("hit_front",PhotonTargets.All);
-					}
-					PhotonNetwork.Destroy(this.gameObject);
-				}
-				/*
 				if(hit.transform.CompareTag("Shield"))
 				{
 					PhotonView hitShieldView = hit.transform.GetComponent<PhotonView>();
@@ -121,48 +66,17 @@ public class BulletScript : Photon.MonoBehaviour
 					hitShieldView.RPC("AddAmmo", PhotonTargets.All);
 					PhotonNetwork.Destroy(this.gameObject);
 				}
-
-				else if(hit.transform.CompareTag("head"))
-				{
-					PhotonView hitPlayerView = hit.transform.parent.GetComponent<PhotonView>();
-					//PhotonView hitPlayerView = hit.transform.GetComponent<PhotonView>();
-					if(hitPlayerView.isMine)
-					{
-						return;
-					}
-					Debug.Log("hit in head");
-					hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
-					hitPlayerView.RPC("hit_head",PhotonTargets.All);
-					PhotonNetwork.Destroy(this.gameObject);
-				}
-
-				else if(hit.transform.CompareTag("back"))
-				{
-					PhotonView hitPlayerView = hit.transform.parent.GetComponent<PhotonView>();
-					//PhotonView hitPlayerView = hit.transform.GetComponent<PhotonView>();
-					if(hitPlayerView.isMine)
-					{
-						return;
-					}
-					Debug.Log("hit in back");
-					hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
-					hitPlayerView.RPC("hit_back",PhotonTargets.All);
-					PhotonNetwork.Destroy(this.gameObject);
-				}
-
-
 				else if(hit.transform.CompareTag("Player"))
 				{
-					PhotonView hitPlayerView = hit.transform.parent.GetComponent<PhotonView>();
-					//PhotonView hitPlayerView = hit.transform.GetComponent<PhotonView>();
+					PhotonView hitPlayerView = hit.transform.GetComponent<PhotonView>();
+
 					if(hitPlayerView.isMine)
 					{
 						return;
 					}
-					hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
-					hitPlayerView.RPC("hit_front",PhotonTargets.All);
 
-					Debug.Log("hit in front");
+					hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
+
 					PhotonPlayer [] playerlist = PhotonNetwork.playerList;
 					foreach( PhotonPlayer player in playerlist){
 						Debug.Log("player name in hieracy"+hit.transform.root.gameObject.GetComponent<PhotonView>().owner.name);
@@ -176,19 +90,10 @@ public class BulletScript : Photon.MonoBehaviour
 
 					PhotonNetwork.Destroy(this.gameObject);		
 				}
-				*/
-
-
-
+				
 				GameObject hitEffect = PhotonNetwork.Instantiate("BulletHitEffect", this.transform.position - hit.normal * .1f, Quaternion.LookRotation(hit.normal), 0);
 				PhotonView hitView = hitEffect.GetComponent<PhotonView>();
 				hitView.RPC("SetColor", PhotonTargets.All, this.color.r, this.color.g, this.color.b, this.color.a);
-				hitView.RPC("SetSize", PhotonTargets.All, this.transform.localScale.x);
-				AudioSource main2 = hitEffect.gameObject.GetComponent( typeof(AudioSource) ) as AudioSource;
-				main2.clip = Resources.Load("Sounds/bounce") as AudioClip;
-				main2.loop = false;
-				main2.enabled = true;
-				main2.Play();
 
 				speed = Mathf.Clamp(speed * .8f, minSpeed, maxSpeed);
 				bulletDamage = Mathf.Clamp(bulletDamage - 1, 1, 5);
@@ -210,27 +115,15 @@ public class BulletScript : Photon.MonoBehaviour
 	{
 		PhotonPlayer [] playerlist = PhotonNetwork.playerList;
 		foreach( PhotonPlayer player in playerlist){
-			//Debug.Log("player name in hieracy"+hit.transform.root.gameObject.GetComponent<PhotonView>().owner.name);
-			//Debug.Log("player name: "+ player.name);
 			if(hit.transform.root.gameObject.GetComponent<PhotonView>().owner.name == player.name){
-				//Debug.Log("find players");
 				PhotonHashtable someCustomPropertiesToSet = new PhotonHashtable() {{"death", (int)player.customProperties["death"]+1}};
 				player.SetCustomProperties(someCustomPropertiesToSet);
-
-				//Debug.Log("kill"+(int)PhotonNetwork.player.customProperties["death"]);
-				//playerdatascript.killed[playerdatascript.recordcount] = hit.transform.root.gameObject.GetComponent<PhotonView>().owner;
-
-				//Debug.Log("in bullet hit player"+hit.transform.root.gameObject.GetComponent<PhotonView>().owner);
-				//Debug.Log("in bullet"+playerdatascript.killed[playerdatascript.recordcount].name);
 			}
 			if(bulletowner == player.name){
 				PhotonHashtable someCustomPropertiesToSet = new PhotonHashtable() {{"kill", (int)player.customProperties["kill"]+1}};
 				player.SetCustomProperties(someCustomPropertiesToSet);
-				//playerdatascript.killer[playerdatascript.recordcount] = player;
 			}
 		}
-		//KeyValuePair<string, string> killpair = new KeyValuePair<string, string> (bulletowner,
-		//	hit.transform.root.gameObject.GetComponent<PhotonView> ().owner.name);
 		string killpair = bulletowner + " killed " + hit.transform.root.gameObject.GetComponent<PhotonView> ().owner.name;
 		string hashstring = "killinfo"+((int)PhotonNetwork.room.customProperties ["count"]).ToString(); 
 		PhotonHashtable killinfo = new PhotonHashtable (){{hashstring,killpair}};
@@ -241,11 +134,6 @@ public class BulletScript : Photon.MonoBehaviour
 				newcount = 1;
 		PhotonHashtable newcountinfo = new PhotonHashtable (){{"count",newcount}};
 		PhotonNetwork.room.SetCustomProperties (newcountinfo);
-		/*
-		playerdatascript.recordcount = playerdatascript.recordcount+1;
-		if(playerdatascript.recordcount == 4)
-			playerdatascript.recordcount =0;
-		*/
 	}
 
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

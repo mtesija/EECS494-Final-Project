@@ -51,6 +51,12 @@ public class IngameGUI : MonoBehaviour {
 			this.statsWindowOn = !this.statsWindowOn;
 			this.statsOn = true;    // enable stats when showing the window
 		}
+
+		if (Input.GetKeyUp(KeyCode.Tab))
+		{
+			this.statsWindowOn = !this.statsWindowOn;
+			this.statsOn = false;    // enable stats when showing the window
+		}
 	}
 	
 	public void OnGUI()
@@ -64,9 +70,9 @@ public class IngameGUI : MonoBehaviour {
 		{
 			return;
 		}
-		this.statsRect = GUILayout.Window(this.WindowId, this.statsRect, this.ShootemStatsWindow, "Scoreboard(Tab)");
+		this.statsRect = GUILayout.Window(this.WindowId, this.statsRect, this.ShootemStatsWindow, "Scoreboard");
 
-		this.KillInfoRect = GUILayout.Window(this.KillWindowId, this.KillInfoRect, this.KillInfoWindow, "Kill Info");
+		this.KillInfoRect = GUILayout.Window(this.KillWindowId, this.KillInfoRect, this.KillInfoWindow, "Kill Feed");
 	}
 	
 	public void ShootemStatsWindow(int windowID)
@@ -79,9 +85,9 @@ public class IngameGUI : MonoBehaviour {
 			elapsedMs = 1;
 		}
 		GUILayout.BeginHorizontal ();
-		GUILayout.Label ("PlayerName");
-		GUILayout.Label ("Kill");
-		GUILayout.Label ("Death");
+		GUILayout.Label ("Player:");
+		GUILayout.Label ("Kills:");
+		GUILayout.Label ("Deaths:");
 		GUILayout.EndHorizontal ();
 		PhotonPlayer [] playerlist = PhotonNetwork.playerList;
 
