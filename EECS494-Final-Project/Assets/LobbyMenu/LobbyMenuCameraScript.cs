@@ -206,8 +206,9 @@ public class LobbyMenuCameraScript : MonoBehaviour
 	private void StartGame()
 	{
 		playerData.playerColor = colors[ colorBoxControl.SelectedItemIndex ];
-		if(PhotonNetwork.playerList.Length <= 1) return;
+		if(PhotonNetwork.playerList.Length <= 0) return;
 
+		//PhotonNetwork.isMessageQueueRunning = false;
 		switch(levelBoxControl.SelectedItemIndex)
 		{
 		case 0:
@@ -225,5 +226,24 @@ public class LobbyMenuCameraScript : MonoBehaviour
 	public void OnFailedToConnectToPhoton(object parameters)
 	{
 		this.connectFailed = true;
+	}
+
+
+	void OnLevelWasLoaded(int level) {
+		if (level == 0) {
+			Debug.Log("sdad");
+		}
+		
+		if (level == 1) {
+			Debug.Log("sdad");
+		}
+		
+		if (level == 2) {
+			Debug.Log("sdad");
+		}
+		
+		if (level == 3) {
+			Debug.Log("sdad");
+		}
 	}
 }

@@ -11,10 +11,16 @@ public class SpawnRandomizer : MonoBehaviour {
 	public SpawnPlayer spawn6;
 	public SpawnPlayer spawn7;
 	public SpawnPlayer spawn8;
-
+	private float timer =4;
 	// Use this for initialization
 	void Awake() {
-		Spawn ();
+		//Spawn ();
+	}
+
+	void Update(){
+		timer -= 1;
+		if (timer == 0)
+						Spawn ();
 	}
 	
 	// Update is called once per frame
