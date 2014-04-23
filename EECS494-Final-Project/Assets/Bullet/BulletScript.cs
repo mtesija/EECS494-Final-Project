@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using PhotonHashtable = ExitGames.Client.Photon.Hashtable;
 
 [RequireComponent(typeof(PhotonView))]
@@ -27,9 +28,11 @@ public class BulletScript : Photon.MonoBehaviour
 
 	private string bulletowner;
 
+	private PlayerDataScript playerdatascript;
 
 	void Awake()
 	{
+		playerdatascript = GameObject.Find ("PlayerData").GetComponent<PlayerDataScript> ();
 		bulletowner = PhotonNetwork.player.name;
 		if(photonView.isMine)
 		{
@@ -207,19 +210,42 @@ public class BulletScript : Photon.MonoBehaviour
 	{
 		PhotonPlayer [] playerlist = PhotonNetwork.playerList;
 		foreach( PhotonPlayer player in playerlist){
-			Debug.Log("player name in hieracy"+hit.transform.root.gameObject.GetComponent<PhotonView>().owner.name);
-			Debug.Log("player name: "+ player.name);
+			//Debug.Log("player name in hieracy"+hit.transform.root.gameObject.GetComponent<PhotonView>().owner.name);
+			//Debug.Log("player name: "+ player.name);
 			if(hit.transform.root.gameObject.GetComponent<PhotonView>().owner.name == player.name){
-				Debug.Log("find players");
+				//Debug.Log("find players");
 				PhotonHashtable someCustomPropertiesToSet = new PhotonHashtable() {{"death", (int)player.customProperties["death"]+1}};
 				player.SetCustomProperties(someCustomPropertiesToSet);
-				Debug.Log("kill"+(int)PhotonNetwork.player.customProperties["death"]);
+
+				//Debug.Log("kill"+(int)PhotonNetwork.player.customProperties["death"]);
+				//playerdatascript.killed[playerdatascript.recordcount] = hit.transform.root.gameObject.GetComponent<PhotonView>().owner;
+
+				//Debug.Log("in bullet hit player"+hit.transform.root.gameObject.GetComponent<PhotonView>().owner);
+				//Debug.Log("in bullet"+playerdatascript.killed[playerdatascript.recordcount].name);
 			}
 			if(bulletowner == player.name){
 				PhotonHashtable someCustomPropertiesToSet = new PhotonHashtable() {{"kill", (int)player.customProperties["kill"]+1}};
 				player.SetCustomProperties(someCustomPropertiesToSet);
+				//playerdatascript.killer[playerdatascript.recordcount] = player;
 			}
 		}
+		//KeyValuePair<string, string> killpair = new KeyValuePair<string, string> (bulletowner,
+		//	hit.transform.root.gameObject.GetComponent<PhotonView> ().owner.name);
+		string killpair = bulletowner + " killed " + hit.transform.root.gameObject.GetComponent<PhotonView> ().owner.name;
+		string hashstring = "killinfo"+((int)PhotonNetwork.room.customProperties ["count"]).ToString(); 
+		PhotonHashtable killinfo = new PhotonHashtable (){{hashstring,killpair}};
+		PhotonNetwork.room.SetCustomProperties (killinfo);
+		int newcount = ((int)PhotonNetwork.room.customProperties ["count"]);
+		newcount++;
+		if (newcount == 4)
+				newcount = 1;
+		PhotonHashtable newcountinfo = new PhotonHashtable (){{"count",newcount}};
+		PhotonNetwork.room.SetCustomProperties (newcountinfo);
+		/*
+		playerdatascript.recordcount = playerdatascript.recordcount+1;
+		if(playerdatascript.recordcount == 4)
+			playerdatascript.recordcount =0;
+		*/
 	}
 
 	public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
