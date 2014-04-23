@@ -96,9 +96,9 @@ public class IngameGUI : MonoBehaviour {
 		{
 			return;
 		}
-		this.statsRect = GUILayout.Window(this.WindowId, this.statsRect, this.ShootemStatsWindow, "Scoreboard(Tab)");
+		this.statsRect = GUILayout.Window(this.WindowId, this.statsRect, this.ShootemStatsWindow, "Scoreboard");
 
-		this.KillInfoRect = GUILayout.Window(this.KillWindowId, this.KillInfoRect, this.KillInfoWindow, "Kill Info");
+		this.KillInfoRect = GUILayout.Window(this.KillWindowId, this.KillInfoRect, this.KillInfoWindow, "Kill Feed");
 
 		if (gameover) {
 			this.GameoverInfoRect = GUILayout.Window(this.GameoverWindowId, this.GameoverInfoRect, this.GameoverInfoWindow, "Game Over!");
@@ -116,9 +116,9 @@ public class IngameGUI : MonoBehaviour {
 			elapsedMs = 1;
 		}
 		GUILayout.BeginHorizontal ();
-		GUILayout.Label ("PlayerName");
-		GUILayout.Label ("Kill");
-		GUILayout.Label ("Death");
+		GUILayout.Label ("Player:");
+		GUILayout.Label ("Kills:");
+		GUILayout.Label ("Deaths:");
 		GUILayout.EndHorizontal ();
 		PhotonPlayer [] playerlist = PhotonNetwork.playerList;
 

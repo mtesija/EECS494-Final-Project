@@ -24,7 +24,6 @@ public class BulletScript : Photon.MonoBehaviour
 	private Vector3 serverVelocity;
 	
 	private float lerpValue = 0;
-	private AudioSource main;
 
 	private string bulletowner;
 
@@ -45,17 +44,6 @@ public class BulletScript : Photon.MonoBehaviour
 			this.serverPosition = this.transform.position;
 			this.clientPosition = this.transform.position;
 		}
-	}
-
-	void Start()
-	{
-		main = gameObject.GetComponent( typeof(AudioSource) ) as AudioSource;
-		main.clip = Resources.Load("Sounds/buzz") as AudioClip;
-		main.loop = true;
-		main.enabled = true;
-		main.Play();
-
-
 	}
 
 	void FixedUpdate()
@@ -184,11 +172,6 @@ public class BulletScript : Photon.MonoBehaviour
 				PhotonView hitView = hitEffect.GetComponent<PhotonView>();
 				hitView.RPC("SetColor", PhotonTargets.All, this.color.r, this.color.g, this.color.b, this.color.a);
 				hitView.RPC("SetSize", PhotonTargets.All, this.transform.localScale.x);
-				AudioSource main2 = hitEffect.gameObject.GetComponent( typeof(AudioSource) ) as AudioSource;
-				main2.clip = Resources.Load("Sounds/bounce") as AudioClip;
-				main2.loop = false;
-				main2.enabled = true;
-				main2.Play();
 
 				speed = Mathf.Clamp(speed * .8f, minSpeed, maxSpeed);
 				bulletDamage = Mathf.Clamp(bulletDamage - 1, 1, 5);
