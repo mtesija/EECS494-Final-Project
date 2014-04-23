@@ -112,26 +112,18 @@ public class PlayerScript : MonoBehaviour
 				{
 					Vector3 relativePos = hit.point - CurrentWeapon.WeaponTransform.transform.position;
 					Quaternion rotation = Quaternion.LookRotation(relativePos);
-					//CurrentWeapon.WeaponTransform.transform.rotation = rotation;
-					
-					//if the distance is smaller than 4, rotate the Gun towards the middle of the screen.
 					CurrentWeapon.WeaponTransform.transform.rotation = Quaternion.Slerp(CurrentWeapon.WeaponTransform.transform.rotation, rotation, Time.deltaTime * 20f);
 
 				}
 			}
 			else 
 			{
-
 				if(hit.distance >= 4) // Cap its minimum distance to 4, so that your gun wont glitch out of position.
 				{
-					//Uncomment these lines if you want your ADS to focus on targets and keeping the laser on your objects. This will cause your Sight to jump out of your FOV.
 					Vector3 relativePos = hit.point - CurrentWeapon.WeaponTransform.transform.position;
 					Quaternion rotation = Quaternion.LookRotation(relativePos);
 					CurrentWeapon.WeaponTransform.transform.rotation = Quaternion.Slerp(CurrentWeapon.WeaponTransform.transform.rotation, rotation, Time.deltaTime * 7f);
 				} 
-				
-				//Comment this line if you want your ADS to go back to its forward position at all times. It wont focus on new targets. Uncomments the above if-statement.
-				//CurrentWeapon.WeaponTransform.transform.rotation = transform.rotation;
 			}
 			
 			if(Input.GetButton("Fire1") && reloadWeapon == false && walkingState != WalkingState.Running)
@@ -146,68 +138,6 @@ public class PlayerScript : MonoBehaviour
 
 						PhotonView bulletView = bullet.GetComponent<PhotonView>();
 						bulletView.RPC("SetColor", PhotonTargets.All, playerData.playerColor.r, playerData.playerColor.g, playerData.playerColor.b, playerData.playerColor.a);
-
-						/*
-						GameObject redBullet = Instantiate(Resources.Load("Bullet"), this.transform.position, Quaternion.identity) as GameObject;
-						redBullet.rigidbody.velocity = ray.direction;
-						BulletScript redBulletScript = redBullet.GetComponent<BulletScript>();
-						*/
-
-						//Spawn Muzzles at the end of the gun barrel.
-
-						/*
-						GameObject _Muzzle;
-						_Muzzle = Instantiate(muzzleArray[Random.Range(0,10)], CurrentWeapon.gunBarrelPoint.transform.position, CurrentWeapon.gunBarrelPoint.transform.rotation) as GameObject; //Make a MuzzleFlash. //Rotate it toward the gun.
-						_Muzzle.transform.parent = WeaponHolder.transform;
-						muzzleArray[2].layer = 8; //Layer see gunfire through objects. (Layer 8 = GunThroughObjects layer).
-						*/
-
-						//If the target collider doesnt have the CollidableScript component attached, spawn an impact prefab on the hit.normal.
-						/*
-						if(!hit.collider.gameObject.GetComponent<CollidableScript>())
-						{
-							GameObject _Impact;
-							_Impact = Instantiate(impactArray[Random.Range(0,5)], hit.point, Quaternion.FromToRotation(Vector3.up, hit.normal)) as GameObject; //This will make an impact at the point where the raycast hits, and it will turn up from the surface on which is being shot at.									
-							_Impact.transform.Translate(0.0f, 0.01f, 0.0f);
-							//Position the object 0.01f upwards, so that the plane prefab wont get "stuck" into other surfaces.
-						}
-						*/
-						/*
-						CollidableScript collidable = hit.collider.gameObject.GetComponent<CollidableScript>();
-						if (collidable)
-						{
-							//If the enemy collider has a collidable script attached, check if its an enemy or a hostage.
-							if(hit.collider.gameObject.GetComponent<EnemyScript>())
-							{
-								DataManager.getInstance().enemiesKilled += 1;
-								hit.collider.gameObject.GetComponent<EnemyScript>().isShot = true;
-								Destroy(hit.collider.gameObject.GetComponent<CollidableScript>());
-								//Destroy the component on that object, so that it wont be triggered twice when shot at.
-							}
-							
-							else if(hit.collider.gameObject.GetComponent<HostageScript>())
-							{
-								hit.collider.gameObject.GetComponent<HostageScript>().isShot = true;
-								DataManager.getInstance().friendliesKilled += 1;
-								Destroy(hit.collider.gameObject.GetComponent<CollidableScript>());
-								//Destroy the component on that object, so that it wont be triggered twice when shot at.
-							}
-						}	
-						*/
-
-						//Recoil while shooting.
-						/*
-						if(!isAiming)
-						{
-							CurrentRecoil1 += new Vector3(CurrentWeapon.RecoilRotation.x, Random.Range(-CurrentWeapon.RecoilRotation.y, CurrentWeapon.RecoilRotation.y));
-							CurrentRecoil3 += new Vector3(Random.Range(-CurrentWeapon.RecoilKickBack.x, CurrentWeapon.RecoilKickBack.x), Random.Range(-CurrentWeapon.RecoilKickBack.y, CurrentWeapon.RecoilKickBack.y), CurrentWeapon.RecoilKickBack.z);
-						}
-						else 
-						{
-							CurrentRecoil1 += new Vector3(CurrentWeapon.RecoilRotation.x, Random.Range(-CurrentWeapon.RecoilRotation.y, CurrentWeapon.RecoilRotation.y));
-							CurrentRecoil3 += new Vector3(Random.Range(-CurrentWeapon.RecoilKickBackADS.x, CurrentWeapon.RecoilKickBackADS.x), Random.Range(-CurrentWeapon.RecoilKickBackADS.y, CurrentWeapon.RecoilKickBackADS.y), CurrentWeapon.RecoilKickBackADS.z);
-						}
-						*/
 						//audio.PlayOneShot(gunFire);
 						bulletCounter -= 1;
 						shootTimer = 0;
@@ -253,13 +183,6 @@ public class PlayerScript : MonoBehaviour
 			if(Input.GetButton("Run") && !isAiming)
 			{
 				anim.SetBool("run",true);
-				/*
-				Quaternion target = Quaternion.Euler(0, -90f, 0);
-
-				ADSHolder.transform.rotation = target;
-				walkingState = WalkingState.Running;
-				*/
-
 				CharMotor.movement.maxForwardSpeed = runSpeed;
 				CharMotor.movement.maxSidewaysSpeed = runSpeed;
 				CharMotor.movement.maxBackwardsSpeed = runSpeed / 2;
@@ -300,7 +223,6 @@ public class PlayerScript : MonoBehaviour
 		//Aim Down Sight controller. When right mouse clicked, lerp the gun towards the player his face.
 		if(Input.GetKey(KeyCode.E) && walkingState == WalkingState.Walking || Input.GetKey(KeyCode.E) && walkingState == WalkingState.Idle)
 		{
-
 			isAiming = true;
 			//ADSHolder.localPosition = Vector3.Lerp(ADSHolder.localPosition, CurrentWeapon.Scopes[CurrentWeapon.CurrentScope].adsPosition, 0.25f);
 			Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, new Vector3(0,0,1),0.25f);
@@ -318,53 +240,6 @@ public class PlayerScript : MonoBehaviour
 	
 	public void AnimationController()
 	{
-
-		//Switch between multiple character animations when correct parameters have been met. Fade between animations with a 0.2f speed.
-		/*
-		if(reloadWeapon == true)
-		{
-			WalkAnimationHolder.animation.CrossFade("Reload", 0.2f);
-		}
-		
-			if(WasStanding && !CharCont.isGrounded)
-			{
-				WasStanding = false;
-				JumpAnimationHolder.animation.Play("JumpUnzoomed");
-			}
-			else if(!WasStanding && CharCont.isGrounded)
-			{
-				WasStanding = true;
-				JumpAnimationHolder.animation.Play("LandUnzoomed");
-			}
-		
-		if(reloadWeapon == false)
-		{	
-			if(walkingState == WalkingState.Running)
-			{
-				WalkAnimationHolder.animation.CrossFade("RunUnzoomed", 0.2f);
-			}
-			else if(walkingState == WalkingState.Walking && !isAiming)
-			{
-				WalkAnimationHolder.animation.CrossFade("WalkUnzoomed", 0.2f);
-			}
-			
-			else if(walkingState == WalkingState.Walking && isAiming)
-			{
-				WalkAnimationHolder.animation.CrossFade("WalkZoomed", 0.2f);
-			}
-			
-			else if(walkingState == WalkingState.Idle && !isAiming)
-			{
-				WalkAnimationHolder.animation.CrossFade("IdleUnzoomed", 0.2f);
-			}
-			
-			else if(walkingState == WalkingState.Idle && isAiming)
-			{
-				WalkAnimationHolder.animation.CrossFade("IdleZoomed", 0.2f);
-			}		
-		}
-		*/
-
 		if (Input.GetAxis ("Horizontal") < 0) {
 			anim.SetBool("lft",true);
 			anim.SetBool("rgt",false);

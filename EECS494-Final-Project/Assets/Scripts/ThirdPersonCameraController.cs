@@ -25,11 +25,17 @@ public class ThirdPersonCameraController : MonoBehaviour {
 		RaycastHit hit;
 		if(Physics.Raycast(transform.parent.position, desiredDirection, out hit, distance, layerMask))
 		{
+			if(!Input.GetKey(KeyCode.E)){
 			transform.position = hit.point + hit.normal * .3f;
+			}
+			//Camera.main.transform.position = Vector3.Lerp(Camera.main.transform.position, hit.point + hit.normal * .3f,0.25f);
 		}
 		else
 		{
-			transform.localPosition = direction;
+			if(!Input.GetKey(KeyCode.E)){
+				//transform.localPosition = direction;
+				Camera.main.transform.localPosition = Vector3.Lerp(Camera.main.transform.localPosition, new Vector3(1,0,-2),0.25f);
+			}
 		}
 	}
 }

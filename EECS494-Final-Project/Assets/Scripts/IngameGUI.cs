@@ -28,11 +28,21 @@ public class IngameGUI : MonoBehaviour {
 	
 	/// <summary>Unity GUI Window ID (must be unique or will cause issues).</summary>
 	public int WindowId = 100;
-	
+
 
 	public Rect KillInfoRect = new Rect(0, 0, 200, 100);
+
+
+	public Rect GameoverInfoRect = new Rect(600, 0, 200, 100);
+	public int GameoverWindowId = 103;
+
 	public int KillWindowId = 102;
 
+	private bool gameover = false;
+	private bool reloadlevel = false;
+	private float timedelay = 8;
+	private string winner = "null";
+	public int killstowin = 1;
 	public void Start()
 	{
 		playerdatascript = GameObject.Find ("PlayerData").GetComponent<PlayerDataScript> ();
@@ -51,6 +61,28 @@ public class IngameGUI : MonoBehaviour {
 			this.statsWindowOn = !this.statsWindowOn;
 			this.statsOn = true;    // enable stats when showing the window
 		}
+		PhotonPlayer [] playerlist = PhotonNetwork.playerList;
+		if (!gameover) {
+						foreach (PhotonPlayer pp in playerlist) {
+								if ((int)pp.customProperties ["kill"] >= killstowin) {
+										this.GetComponent<CharacterController> ().enabled = false;
+										this.GetComponent<PlayerScript> ().enabled = false;
+										winner = pp.name;
+										gameover = true;
+								}
+						}
+				}
+		if (gameover) {
+			timedelay -=1*Time.deltaTime;
+			if(timedelay<0){
+				PhotonNetwork.LeaveRoom ();
+				PhotonNetwork.Disconnect();
+				if(reloadlevel == false){
+					Application.LoadLevel ("_MainMenu");
+					reloadlevel = true;
+				}
+			}
+		}
 	}
 	
 	public void OnGUI()
@@ -67,6 +99,11 @@ public class IngameGUI : MonoBehaviour {
 		this.statsRect = GUILayout.Window(this.WindowId, this.statsRect, this.ShootemStatsWindow, "Scoreboard(Tab)");
 
 		this.KillInfoRect = GUILayout.Window(this.KillWindowId, this.KillInfoRect, this.KillInfoWindow, "Kill Info");
+
+		if (gameover) {
+			this.GameoverInfoRect = GUILayout.Window(this.GameoverWindowId, this.GameoverInfoRect, this.GameoverInfoWindow, "Game Over!");
+
+		}
 	}
 	
 	public void ShootemStatsWindow(int windowID)
@@ -172,6 +209,11 @@ public class IngameGUI : MonoBehaviour {
 		}
 		*/
 
+	}
+
+	public void GameoverInfoWindow(int windowID){
+		GUILayout.Label("The winner is "+winner+"!");
+		GUILayout.Label ("The game will end in " + timedelay.ToString ());
 	}
 
 

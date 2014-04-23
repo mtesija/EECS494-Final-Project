@@ -384,22 +384,9 @@ public class PlayerManager : Photon.MonoBehaviour {
 			{
 				GA.API.Design.NewEvent("Death", this.transform.position);
 			}
-
-			DisablePlayerActions2 disable = this.GetComponent<DisablePlayerActions2>();
-			Destroy(disable);
-			
-			this.GetComponent<CapsuleCollider>().enabled = false;
-			CapsuleCollider[] capsuleco = this.GetComponentsInChildren<CapsuleCollider>();
-			foreach(CapsuleCollider ca in capsuleco){
-				Debug.Log("turn off! ");
-				ca.enabled = false;
- 			}
-
-			BoxCollider boxcollider = this.GetComponentInChildren<BoxCollider>();
-			boxcollider.enabled = false;
-
-
 			timedelay -=1*Time.deltaTime;
+			this.GetComponent<CharacterController>().enabled = false;
+			this.GetComponent<PlayerScript>().enabled = false;
 			if(timedelay < 0){
 				timedelay = 4;
 				spawnScript.Spawn();
