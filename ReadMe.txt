@@ -50,6 +50,7 @@ Cool Things:
 
 Stolen Stuff:
 
+The players model/animations/gun, and most of the map 1 textures are taken from the asset store.
 everything in the _PlayerPackage folder (we modified some of the scripts in here to work with our game)
 everything in the GameAnalytics folder
 everything in the Gizmos folder
