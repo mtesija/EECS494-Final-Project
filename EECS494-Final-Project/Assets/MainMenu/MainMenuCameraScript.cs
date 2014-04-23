@@ -1,4 +1,4 @@
-﻿/*
+﻿
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
@@ -193,6 +193,7 @@ public class MainMenuCameraScript : MonoBehaviour
 				if (GUILayout.Button("Join"))
 				{
 					PhotonNetwork.JoinRoom(roomInfo.name);
+					//PhotonNetwork.LoadLevel("LobbyMenu");
 				}
 				GUILayout.EndHorizontal();
 			}
@@ -220,9 +221,36 @@ public class MainMenuCameraScript : MonoBehaviour
 	{
 		this.connectFailed = true;
 	}
-}
-*/
 
+	/*
+	void OnLevelWasLoaded(int level) {
+		if (level == 0) {
+			Debug.Log("sdad");
+			PhotonNetwork.isMessageQueueRunning = true;
+		}
+		
+		if (level == 1) {
+			Debug.Log("sdad");
+			PhotonNetwork.isMessageQueueRunning = true;
+		}
+		
+		if (level == 2) {
+			Debug.Log("sdad");
+			PhotonNetwork.isMessageQueueRunning = true;
+		}
+		
+		if (level == 3) {
+			Debug.Log("sdad");
+			PhotonNetwork.isMessageQueueRunning = true;
+		}
+	}
+	*/
+}
+
+
+
+
+/*
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
@@ -476,3 +504,5 @@ public class MainMenuCameraScript : MonoBehaviour
 		this.connectFailed = true;
 	}
 }
+
+*/

@@ -10,7 +10,7 @@ public class BulletScript : Photon.MonoBehaviour
 	private float maxSpeed = 14;
 	private float speed = 14;
 
-	private float bulletDamage = 5f;
+	private float bulletDamage = 4f;
 
 	private Color color = Color.white;
 
@@ -79,7 +79,7 @@ public class BulletScript : Photon.MonoBehaviour
 					else if(hit.transform.CompareTag("head"))
 					{
 						Debug.Log("hit in head");
-						hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
+						hitPlayerView.RPC("modify_health", PhotonTargets.All, -2*bulletDamage);
 						if(playermanager.cur_health<=0){
 							hitPlayerView.RPC("is_dead",PhotonTargets.All);
 							updatekillanddeath(hit);
@@ -98,7 +98,7 @@ public class BulletScript : Photon.MonoBehaviour
 							hitPlayerView.RPC("hit_back",PhotonTargets.All);
 					}
 					else if(hit.transform.CompareTag("Player")){
-						hitPlayerView.RPC("modify_health", PhotonTargets.All, -1f);
+						hitPlayerView.RPC("modify_health", PhotonTargets.All, -bulletDamage);
 						if(playermanager.cur_health<=0){
 							hitPlayerView.RPC("is_dead",PhotonTargets.All);
 							updatekillanddeath(hit);

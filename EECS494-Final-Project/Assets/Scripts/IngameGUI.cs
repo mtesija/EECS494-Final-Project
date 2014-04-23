@@ -42,7 +42,7 @@ public class IngameGUI : MonoBehaviour {
 	private bool reloadlevel = false;
 	private float timedelay = 8;
 	private string winner = "null";
-	public int killstowin = 1;
+	public int killstowin = 10;
 	public void Start()
 	{
 		playerdatascript = GameObject.Find ("PlayerData").GetComponent<PlayerDataScript> ();

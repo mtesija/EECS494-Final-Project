@@ -16,6 +16,6 @@ public class PlayerDataScript : MonoBehaviour {
 		DontDestroyOnLoad(this.gameObject);
 	}
 	void Update(){
-
 	}
+
 }
