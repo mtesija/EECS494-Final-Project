@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 		//Lock cursor if game is playing.
 		if(!pauseScript.pause)
 		{
-			Screen.lockCursor = true;	
+			//Screen.lockCursor = true;	
 		}
 		
 		if(DataManager.getInstance().enemiesKilled >= 1 || DataManager.getInstance().friendliesKilled >= 1)
