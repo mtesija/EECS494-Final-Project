@@ -53,6 +53,7 @@ public class BulletScript : Photon.MonoBehaviour
 			RaycastHit hit;
 			if(Physics.Raycast(this.transform.position, this.rigidbody.velocity, out hit, hitLength))
 			{
+				Debug.Log("collider hit");
 				if(hit.transform.CompareTag("Shield"))
 				{
 					PhotonView hitShieldView = hit.transform.GetComponent<PhotonView>();
@@ -66,10 +67,15 @@ public class BulletScript : Photon.MonoBehaviour
 					PhotonNetwork.Destroy(this.gameObject);
 				}
 				else if(hit.transform.CompareTag("head")||hit.transform.CompareTag("back")||hit.transform.CompareTag("Player")){
+					Debug.Log("hit inside");
+
+					/*
 					if(hit.transform.name != "BodyColloder" || hit.transform.name != "BackbodyColider" || hit.transform.name != "HeadCollider")
 					{
 						return;
 					}
+					*/
+
 
 					PhotonView hitPlayerView = hit.transform.parent.GetComponent<PhotonView>();
 					PlayerManager playermanager = hit.transform.parent.GetComponent<PlayerManager>();
@@ -77,6 +83,7 @@ public class BulletScript : Photon.MonoBehaviour
 					{
 						return;
 					}
+					Debug.Log("returned");
 
 					if(hit.transform.CompareTag("head"))
 					{

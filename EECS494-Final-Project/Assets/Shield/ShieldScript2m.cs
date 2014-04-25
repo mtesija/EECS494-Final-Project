@@ -16,38 +16,31 @@ public class ShieldScript2m : Photon.MonoBehaviour {
 	
 	void Update()
 	{
-		if(refreshTimer <= 0)
-		{
-			if(this.renderer.enabled == false)
-			{
-				energy = Mathf.Clamp(energy + 2, 0, maxEnergy);
-				playerManager.modify_secondary(2);
-			}
-			else if(energy >= 0)
-			{
-				energy = Mathf.Clamp(energy - 5, 0, maxEnergy);
-				playerManager.modify_secondary(-5);
-			}
+		if (photonView.isMine) {
+						if (refreshTimer <= 0) {
+								if (this.renderer.enabled == false) {
+										energy = Mathf.Clamp (energy + 2, 0, maxEnergy);
+										playerManager.modify_secondary (2);
+								} else if (energy >= 0) {
+										energy = Mathf.Clamp (energy - 5, 0, maxEnergy);
+										playerManager.modify_secondary (-5);
+								}
 			
-			refreshTimer = .5f;
-		}
-		else
-		{
-			refreshTimer -= Time.deltaTime;
-		}
+								refreshTimer = .5f;
+						} else {
+								refreshTimer -= Time.deltaTime;
+						}
 		
-		if(Input.GetMouseButtonDown(1) && this.renderer.enabled == false && energy >= 5)
-		{
-			this.photonView.RPC("Activate", PhotonTargets.All);
-			refreshTimer = 0;
-		}
+						if (Input.GetMouseButtonDown (1) && this.renderer.enabled == false && energy >= 5) {
+								this.photonView.RPC ("Activate", PhotonTargets.All);
+								refreshTimer = 0;
+						}
 		
-		if(Input.GetMouseButtonUp(1) && this.renderer.enabled == true || energy <= 0)
-		{
-			this.photonView.RPC("Deactivate", PhotonTargets.All);
+						if (Input.GetMouseButtonUp (1) && this.renderer.enabled == true || energy <= 0) {
+								this.photonView.RPC ("Deactivate", PhotonTargets.All);
+						}
+				}
 		}
-	}
-
 	[RPC]
 	void SetShieldColor(float r, float g, float b)
 	{

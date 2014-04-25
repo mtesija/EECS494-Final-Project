@@ -33,9 +33,11 @@ public class DisablePlayerActions2 : Photon.MonoBehaviour
 			this.GetComponentInChildren<BoxCollider>().enabled = true;
 			CapsuleCollider [] capcol = this.GetComponentsInChildren<CapsuleCollider>();
 			foreach(CapsuleCollider cap in capcol){
-				cap.enabled = true;
+					if(!cap.transform.CompareTag("Shield"))
+						cap.enabled = true;
 			}
 			}
+
 			else{
 				this.GetComponentInChildren<BoxCollider>().enabled = false;
 				CapsuleCollider [] capcol = this.GetComponentsInChildren<CapsuleCollider>();
